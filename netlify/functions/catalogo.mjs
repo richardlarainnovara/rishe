@@ -1,6 +1,11 @@
 /* Lee el catálogo público de la tienda de Squarespace y lo entrega limpio a la página.
-   Netlify guarda la respuesta 30 min, así que la tienda no recibe una consulta por cada visita. */
-const TIENDA = "https://www.tapetesrishe.mx/tienda";
+   Netlify guarda la respuesta 30 min, así que la tienda no recibe una consulta por cada visita.
+   La lista de Squarespace trae la foto sin nombre de archivo, así que la foto real se toma
+   de la ficha de cada producto (su imagen para compartir) y se recuerda mientras la función esté activa. */
+const SITIO = "https://www.tapetesrishe.mx";
+const TIENDA = SITIO + "/tienda";
+const UA = { "User-Agent": "Mozilla/5.0 (catalogo)" };
+const memoFoto = new Map();
 
 const limpiar = html => String(html || "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
 
@@ -51,6 +56,8 @@ function convertir(it){
                     (x.qtyInStock != null ? x.qtyInStock : (x.stock && x.stock.quantity) || 0) > 0);
   const texto = limpiar((it.excerpt || "") + " " + (it.body || "")).slice(0, 1500);
   const titulo = String(it.title || "").trim();
+  const base = String(it.assetUrl || "");
+  const alterna = it.items && it.items[0] && it.items[0].assetUrl ? String(it.items[0].assetUrl) : "";
   return {
     n: titulo,
     g: grupo(titulo),
@@ -59,17 +66,46 @@ function convertir(it){
     mano: /a mano|handmade|anudado/i.test(titulo + " " + texto) && !/m[aá]quina/i.test(titulo + " " + texto),
     med: medida(titulo + " " + texto),
     mat: material(titulo + " " + texto) || undefined,
-    i: String(it.assetUrl || "").replace(/^http:/, "https:"),
+    i: (base.endsWith("/") && alterna ? alterna : base).replace(/^http:/, "https:"),
     u: it.fullUrl || "",
     agotado: !hayStock
   };
+}
+
+/* La imagen para compartir de la ficha del producto trae la dirección completa de la foto. */
+async function fotoDe(u){
+  if (memoFoto.has(u)) return memoFoto.get(u);
+  const ctl = new AbortController(), reloj = setTimeout(() => ctl.abort(), 5000);
+  try {
+    const r = await fetch(u.startsWith("http") ? u : SITIO + u, { headers: UA, signal: ctl.signal });
+    if (!r.ok) return null;
+    const html = await r.text();
+    const m = html.match(/<meta[^>]+property=["']og:image["'][^>]*content=["']([^"']+)["']/i)
+           || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]*property=["']og:image["']/i);
+    if (!m) return null;
+    const url = m[1].replace(/&amp;/g, "&").split("?")[0].replace(/^http:/, "https:");
+    if (!/\/[^\/]+\.(?:jpe?g|png|gif|webp)$/i.test(url) || /logo|fondo/i.test(url)) return null;
+    memoFoto.set(u, url);
+    return url;
+  } catch (e){
+    return null;
+  } finally {
+    clearTimeout(reloj);
+  }
+}
+
+async function enParalelo(lista, n, fn){
+  let k = 0;
+  await Promise.all(Array.from({ length: n }, async () => {
+    while (k < lista.length){ const x = lista[k++]; await fn(x); }
+  }));
 }
 
 export default async () => {
   try {
     let url = TIENDA + "?format=json", items = [], vueltas = 0;
     while (url && vueltas < 15){
-      const r = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0 (catalogo)" } });
+      const r = await fetch(url, { headers: UA });
       if (!r.ok) break;
       const j = await r.json();
       items = items.concat(j.items || []);
@@ -79,6 +115,14 @@ export default async () => {
     }
     const productos = items.map(convertir).filter(x => x.n && x.p && x.i && x.u);
     if (!productos.length) throw new Error("catálogo vacío");
+
+    const limite = Date.now() + 8000;
+    await enParalelo(productos, 10, async p => {
+      if (Date.now() > limite) return;
+      const foto = await fotoDe(p.u);
+      if (foto) p.i = foto;
+    });
+
     return new Response(JSON.stringify({ actualizado: new Date().toISOString(), total: productos.length, productos }), {
       headers: { "content-type": "application/json; charset=utf-8",
                  "cache-control": "public, max-age=300",
