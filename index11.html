@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tapetes Rishe — Tapetes persas, limpieza y restauración · CDMX, Edomex y Aguascalientes</title>
+<meta name="description" content="Importamos tapetes de Persia desde 2005: clásicos, vintage, modernos, rústicos y patchwork, hechos a mano o a máquina. Limpieza, restauración y sanitización de tapetes, alfombras, muebles y colchones.">
+<meta name="theme-color" content="#120D0B">
+<link rel="canonical" href="https://www.tapetesrishe.mx/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tapetes Rishe — Tradición y cultura en cada tapete">
+<meta property="og:description" content="Tapetes persas importados desde 2005. Limpieza y restauración profesional.">
+<meta property="og:locale" content="es_MX">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://static1.squarespace.com">
+<link id="fuentes" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@400;500;600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23120D0B'/%3E%3Cpath d='M32 6l7 12 13-2-2 13 12 7-12 7 2 13-13-2-7 12-7-12-13 2 2-13-12-7 12-7-2-13 13 2z' fill='%237A1E1E'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23C9A46A'/%3E%3C/svg%3E">
+
+<script>
+/* ════════════════════════════════════════════════════════════════════════
+   TAPETES RISHE · todo lo editable está aquí. Busca "CONFIRMAR" para ver
+   los datos que hay que validar con el cliente.
+   ════════════════════════════════════════════════════════════════════════ */
+const SITIO = "https://www.tapetesrishe.mx";
+const CDN   = "https://images.squarespace-cdn.com/content/v1/67e306889d8e7c149e183db6/";
+const PROD  = "https://static1.squarespace.com/static/67e306889d8e7c149e183db6/67e306899d8e7c149e183e09/";
+const LOCAL = false;   // true = usa las fotos de la carpeta /fotos (mismo nombre de archivo)
+const F = (ruta, ancho) => /^https?:/.test(ruta) ? ruta + (ruta.includes("?") ? "&" : "?") + "format=" + (ancho || 1000) + "w"
+                         : LOCAL ? "fotos/" + decodeURIComponent(ruta.split("/").pop()).replace(/\+/g," ")
+                                 : PROD + ruta + "?format=" + (ancho || 1000) + "w";
+const G = (ruta, ancho) => LOCAL ? "fotos/" + decodeURIComponent(ruta.split("/").pop()).replace(/\+/g," ")
+                                 : CDN + ruta + "?format=" + (ancho || 1500) + "w";
+
+const CONFIG = {
+  marca: {
+    nombre: "Tapetes Rishe",
+    corto: "Rishe",
+    desde: 2005,
+    totalDisenos: 60,          // se reemplaza solo cuando la página lee la tienda en vivo
+    heroNombre: "Nain",        // tapete principal de la portada
+    catalogoEnVivo: "/api/catalogo",   // "" = usar solo la lista fija de abajo
+    idiomaInicial: "es",
+    rangoPrecio: "$$$"
+  },
+
+  /* Paleta tomada de su marca: negro, rojo y blanco. Se le suma oro viejo para el toque de lujo.
+     Si su rojo exacto es otro, cámbialo aquí. CONFIRMAR tonos con su logotipo. */
+  colores: {
+    tinta:   "#120D0B",   // fondo oscuro
+    noche:   "#1C1512",   // fondo oscuro secundario
+    granate: "#7A1E1E",   // rojo de marca
+    carmin:  "#A3302A",   // rojo vivo para detalles
+    lana:    "#F2EADD",   // marfil de lana
+    lino:    "#E6DCCB",   // marfil secundario
+    oro:     "#C9A46A",   // oro viejo
+    humo:    "#8C8178"    // gris cálido
+  },
+
+  tipografia: {
+    display: "Noto Serif Display",
+    texto:   "Jost"
+  },
+
+  contacto: {
+    telefono:     "55 3880 8695",
+    telefonoLink: "+525538808695",
+    whatsapp:     "525538808695",          // CONFIRMAR que este número tiene WhatsApp
+    email:        "ventas@tapetesrishe.com",
+    instagram:    "https://www.instagram.com/tapetesrishe",
+    facebook:     "https://www.facebook.com/Rishetapetes.mx"
+  },
+
+  whatsappMsg: {
+    es: "¡Hola Tapetes Rishe! Vi su página y quiero información sobre un tapete.",
+    en: "Hi Tapetes Rishe! I saw your website and I'd like information about a rug."
+  },
+
+  /* Sus horarios no aparecen en su sitio: por eso no se muestran. CONFIRMAR y agregar si los dan. */
+  sucursales: [
+    { id: "pedregal", nombre: "Pedregal", ciudad: "Ciudad de México",
+      dir: "Anillo Periférico 4020, Locales 4 y 5", zona: "Jardines del Pedregal, Álvaro Obregón, CDMX" },
+    { id: "magnocentro", nombre: "Magnocentro", ciudad: "Estado de México",
+      dir: "Blvd. Magnocentro No. 26", zona: "Naucalpan de Juárez, Méx." },
+    { id: "ags", nombre: "Aguascalientes", ciudad: "Aguascalientes",
+      dir: "Av. Independencia No. 2351", zona: "Aguascalientes, Ags." }
+  ],
+
+  promos: {
+    codigo: "RISHE2025",
+    es: { primera: "Tu primera compra incluye una limpieza o restauración sin costo.",
+          insta: "Síguenos en Instagram y obtén 10% de descuento con el código" },
+    en: { primera: "Your first purchase includes a free cleaning or restoration.",
+          insta: "Follow us on Instagram and get 10% off with the code" }
+  },
+
+  estilos: ["Clásico", "Vintage", "Moderno", "Rústico", "Patchwork", "Nain", "Tabriz", "Kilim", "Fibra de bambú"],
+
+  /* g = grupo para filtros · mano = hecho a mano · med en metros salvo indicado ·
+     i = foto (ruta de su tienda) · u = página del producto en su tienda.
+     Precios tomados de su tienda el 23 de noviembre de 2026. */
+  productos: [
+    { n: "Nain", g: "clasico", p: 58000, mano: true, med: "2 × 3 m",
+      mat: { es: "Lana y seda", en: "Wool and silk" },   // su página dice "80% lana, 30% seda": CONFIRMAR
+      i: "6848c01f1ef4b52dec05b1ba/1749598239722/tempImageM5dXK1.gif", u: "/tienda/p/nain", hero: true },
+    { n: "Clásico Vintage", g: "vintage", p: 32000, mano: true, med: "2 × 3 m",
+      mat: { es: "Sintético", en: "Synthetic" },
+      i: "6848bf9bcc6de75b44de365a/1749598107044/tempImagen4I8Qa.gif", u: "/tienda/p/clsico-vintage" },
+    { n: "Moderno Vintage", g: "vintage", p: 28000, mano: false, med: "2 × 3 m",
+      mat: { es: "Fibra de bambú", en: "Bamboo fiber" },
+      i: "6848c1f91ef4b52dec05b305/1749598713069/tempImageIQfZVV.gif", u: "/tienda/p/moderno-vintage-fibra-de-bamb" },
+    { n: "Persa Rústico", g: "rustico", p: 22000, mano: true, med: "1 × 1.50 m",
+      i: "680031497869c808d46e2d9f/1744843081109/WhatsApp+Image+2025-04-10+at+10.41.17+AM+%283%29.jpeg", u: "/tienda/p/tapete-13" },
+    { n: "Tabriz Clásico", g: "clasico", p: 19000, mano: true, med: "",
+      mat: { es: "Persa", en: "Persian" },
+      i: "68003995f3195006a261d202/1744845205927/WhatsApp+Image+2025-04-10+at+10.42.07+AM+%283%29.jpeg", u: "/tienda/p/tapete-17" },
+    { n: "Patchwork", g: "rustico", p: 18000, mano: true, med: "2.40 × 1.80 m",
+      mat: { es: "100% lana", en: "100% wool" },
+      i: "6848c25ab91f060aa52165c5/1749598810273/tempImageKCMERK.gif", u: "/tienda/p/patchwork" },
+    { n: "Patchwork Moderno / Rústico", g: "rustico", p: 16400, mano: true, med: "0.89 × 1.48 m",
+      i: "6800308936ea51214f40a770/1744842889099/WhatsApp+Image+2025-04-10+at+10.40.55+AM+%284%29.jpeg", u: "/tienda/p/tapete-9" },
+    { n: "Rústico", g: "rustico", p: 13000, mano: true, med: "1.13 × 1.50 m",
+      i: "68228e7df9c8016586fef585/1747095165947/tempImagekF2yi8.gif", u: "/tienda/p/rstico-hecho-a-mano" },
+    { n: "Vintage Clásico", g: "vintage", p: 12500, mano: false, med: "1 × 1.50 m",
+      i: "680039775a30552faf7ee416/1744845175456/WhatsApp+Image+2025-04-10+at+10.42.08+AM+%281%29.jpeg", u: "/tienda/p/tapete-16" },
+    { n: "Shaggy Moderno", g: "moderno", p: 9800, mano: false, med: "1 × 1.50 m",
+      i: "68002ef936ea51214f40a60b/1787974069187/WhatsApp+Image+2025-04-10+at+10.40.29+AM+%281%29.jpeg", u: "/tienda/p/vy2rvstxwjd0cbzr16esufgk1uvb0u" },
+    { n: "Nain Clásico", g: "clasico", p: 9500, mano: false, med: "1 × 1.50 m",
+      i: "682292ab2a94dc617ccbc115/1747096235423/tempImageRn3AA3.gif", u: "/tienda/p/nain-clsico" },
+    { n: "Clásico Tabriz", g: "clasico", p: 8500, mano: false, med: "1 × 1.50 m",
+      i: "682290482a94dc617ccbbf34/1747095624243/tempImageIKmuZu.gif", u: "/tienda/p/clsico-tabriz" },
+    { n: "Moderno", g: "moderno", p: 6200, mano: false, med: "1 × 1.50 m",
+      i: "682291d08c26eb0facf63ae3/1747096016258/tempImageYwix78.gif", u: "/tienda/p/moderno" },
+    { n: "Moderno Paradise", g: "moderno", p: 5400, mano: false, med: "1 × 1.50 m",
+      i: "682293532a94dc617ccbc185/1747096403618/tempImageO7jSH4.gif", u: "/tienda/p/moderno-paradise" },
+    { n: "Clásico de bambú", g: "clasico", p: 1500, mano: false, med: "50 × 80 cm",
+      mat: { es: "Fibra de bambú", en: "Bamboo fiber" },
+      i: "6848c9a336c31823d93ebbc5/1749600675321/tempImageDLyjEl.gif", u: "/tienda/p/clsico-fibra-de-bamb" }
+  ],
+  /* Nota: en su sitio "hecho a mano" solo aparece en algunas fichas. Donde no lo dicen, se marcó como máquina. */
+
+  grupos: [
+    { k: "todos",   es: "Todos",          en: "All" },
+    { k: "mano",    es: "Hechos a mano",  en: "Handmade" },
+    { k: "clasico", es: "Clásicos",       en: "Classic" },
+    { k: "vintage", es: "Vintage",        en: "Vintage" },
+    { k: "moderno", es: "Modernos",       en: "Modern" },
+    { k: "rustico", es: "Rústicos y patchwork", en: "Rustic & patchwork" }
+  ],
+
+  imagenes: {
+    logo:    G("177554e8-4c36-4181-bb47-657e554c7eef/Tapetes+rishe+-+logoblanco.jpg", 600),
+    usarLogo: true,   // false = muestra el nombre escrito en lugar del logotipo
+    servicios: [
+      G("b1dec567-a6fd-426e-a70e-2906c588793d/Copia+de+4.jpg", 1200),
+      G("d3e80bf6-372e-4f74-9805-03687065a332/Copia+de+5.jpg", 1200),
+      G("c4d7fb78-c5db-45d2-b21a-d4267f46ea8d/Copia+de+6.jpg", 1200)
+    ],
+    banner:  G("bb39e44d-10db-42ff-8bdb-93e60952f6e8/Rishe+rojo.jpg", 1800),
+    nosotros: G("174b23b9-4745-427a-b6dc-c36684ab2703/Dise%C3%B1o+sin+t%C3%ADtulo.jpg", 1200),
+    galeria: [
+      G("640bf0c0-862f-4390-a31d-6c964533724f/4.jpg", 900),
+      G("045316e2-3698-4ffb-9a46-a32c6dd97e7a/6.jpg", 900),
+      G("3cdf75dc-dc2d-400a-930d-0e2cbb052264/7.jpg", 900),
+      G("e7bb01c7-259e-40d1-8426-6825abc02468/8.jpg", 900),
+      G("6f080f87-1ec1-4b5c-b350-9d3e21db518f/9.jpg", 900),
+      G("0a3f01c1-3650-4f44-9b68-6e14cab857d0/10.jpg", 900),
+      G("7ec466f4-0d37-4199-b6f9-bd05507462f3/11.jpg", 900)
+    ],
+    final:   G("29c4acc0-4c91-431b-9cf3-0c22d83f3c57/Tapetes+Rishe+fondo+negro.jpg", 1800)
+  },
+
+  /* Sala interactiva: colores de pared que el visitante puede probar */
+  paredes: [
+    { k: "marfil", es: "Marfil",  en: "Ivory",    a: "#E9E0D1", b: "#D8CCB8" },
+    { k: "salvia", es: "Salvia",  en: "Sage",     a: "#B9BCA8", b: "#9EA28C" },
+    { k: "noche",  es: "Carbón",  en: "Charcoal", a: "#3A3330", b: "#2A2422" }
+  ],
+
+  servicios: [
+    { es: { t: "Limpieza", d: "Con productos y equipo especializados, y altos estándares de higiene. Incluye protección de la fibra." },
+      en: { t: "Cleaning", d: "With specialized products and equipment, and high hygiene standards. Includes fiber protection." } },
+    { es: { t: "Restauración", d: "Expertos en restaurar telas y fibras, tanto industriales como artesanales." },
+      en: { t: "Restoration", d: "Experts in restoring fabrics and fibers, both industrial and handcrafted." } },
+    { es: { t: "Sanitización", d: "Desinfectamos y sanitizamos tapetes, alfombras, muebles y colchones." },
+      en: { t: "Sanitizing", d: "We disinfect and sanitize rugs, carpets, upholstery and mattresses." } }
+  ],
+
+  cotizador: {
+    servicios: [ { k: "limpieza", es: "Limpieza", en: "Cleaning" },
+                 { k: "restauracion", es: "Restauración", en: "Restoration" },
+                 { k: "sanitizacion", es: "Sanitización", en: "Sanitizing" } ],
+    piezas:    [ { k: "tapete", es: "Tapete", en: "Rug" }, { k: "alfombra", es: "Alfombra", en: "Carpet" },
+                 { k: "mueble", es: "Mueble", en: "Upholstery" }, { k: "colchon", es: "Colchón", en: "Mattress" } ]
+  },
+
+  movimiento: { activo: true, velHero: 0.16, velDetras: -0.12, velMedallon: 40, velGaleria: 0.55,
+                velBanner: 0.2, velBanda: 0.5, giro: 10 },
+
+  pie: { credito: "Sitio hecho por Richard Lara", creditoUrl: "", esDemo: true },
+
+  textos: {
+    es: {
+      saltar: "Saltar al contenido", idioma: "Cambiar idioma", menu: "Menú", cerrar: "Cerrar",
+      navColeccion: "Colección", navSala: "Pruébalo en tu sala", navServicios: "Servicios",
+      navCotizar: "Cotizar", navSucursales: "Sucursales", navTienda: "Tienda",
+      heroKicker: "Importadores desde 2005",
+      heroT1: "Tradición y cultura", heroT2: "en cada nudo.",
+      heroLema: "Tapetes de Persia clásicos, vintage, modernos y rústicos. Y el cuidado experto para que duren generaciones.",
+      ctaVer: "Ver la colección", ctaCotizar: "Cotizar una limpieza",
+      ctaWhatsapp: "Escríbenos por WhatsApp",
+      hColeccion: "La colección",
+      subColeccion: "Una selección de su tienda. Cada tapete abre su ficha para comprar en línea.",
+      verSala: "Ver en una sala", comprar: "Comprar", hechoMano: "Hecho a mano", maquina: "Hecho a máquina",
+      verTodos: "Ver la tienda completa", verMas: "Ver más tapetes", agotado: "Agotado", rebaja: "Rebaja",
+      notaVivo: "Precios y disponibilidad en vivo desde su tienda. Actualizado:",
+      notaPrecios: "Precios en pesos mexicanos tomados de su tienda el 23 de noviembre de 2026. Pueden cambiar.",
+      hSala: "Pruébalo en una sala",
+      subSala: "Elige un tapete y mira cómo se ve en el piso. Cambia el tamaño o el color de la pared.",
+      tam: "Tamaño", tamChico: "1 × 1.5 m", tamGrande: "2 × 3 m", pared: "Pared",
+      salaNota: "Simulación ilustrativa con la foto real del tapete.",
+      comprarEste: "Comprar este tapete",
+      cifAnios: "años importando tapetes", cifDisenos: "diseños en la tienda", cifSuc: "sucursales",
+      hNosotros: "Fabricantes e importadores directos",
+      nos1: "Desde 2005 traemos tapetes de alta calidad de Persia, Irán. También fabricamos diseños únicos y personalizados.",
+      nos2: "Trabajamos los estilos Rústico, Clásico, Moderno y Kilim, y damos servicio de limpieza, restauración y sanitización.",
+      hServicios: "El cuidado de tus tapetes",
+      subServicios: "Limpieza, restauración y sanitización de tapetes, alfombras, muebles y colchones.",
+      hCotizar: "Cotiza tu servicio",
+      subCotizar: "Llena estos datos y te mandamos la cotización por WhatsApp.",
+      cServicio: "Servicio", cPieza: "Qué vas a traer", cMedidas: "Medidas aproximadas (m)",
+      cLargo: "Largo", cAncho: "Ancho", cSucursal: "Sucursal más cercana", cNotas: "Comentarios (opcional)",
+      cNotasPh: "Manchas, daños, tipo de tejido…", cEnviar: "Enviar cotización por WhatsApp",
+      cFotos: "Después de enviar el mensaje, adjunta 2 o 3 fotos en el chat.",
+      hSucursales: "Visita una sucursal", comoLlegar: "Cómo llegar",
+      hGaleria: "En nuestras sucursales",
+      bannerTxt: "Cada tapete cuenta una historia de siglos.",
+      ctaFinal: "¿Buscas un tapete o quieres renovar el tuyo?",
+      ctaFinalSub: "Escríbenos y te asesoramos con medidas, estilo y cuidado.",
+      contacto: "Contacto", siguenos: "Síguenos",
+      derechos: "Todos los derechos reservados.",
+      demo: "Muestra de diseño. Precios y datos tomados de tapetesrishe.mx."
+    },
+    en: {
+      saltar: "Skip to content", idioma: "Change language", menu: "Menu", cerrar: "Close",
+      navColeccion: "Collection", navSala: "Try it in a room", navServicios: "Services",
+      navCotizar: "Get a quote", navSucursales: "Stores", navTienda: "Shop",
+      heroKicker: "Importers since 2005",
+      heroT1: "Tradition and culture", heroT2: "in every knot.",
+      heroLema: "Classic, vintage, modern and rustic rugs from Persia. And expert care so they last for generations.",
+      ctaVer: "See the collection", ctaCotizar: "Get a cleaning quote",
+      ctaWhatsapp: "Message us on WhatsApp",
+      hColeccion: "The collection",
+      subColeccion: "A selection from their store. Each rug opens its page to buy online.",
+      verSala: "See it in a room", comprar: "Buy", hechoMano: "Handmade", maquina: "Machine-made",
+      verTodos: "See the full store", verMas: "See more rugs", agotado: "Sold out", rebaja: "Sale",
+      notaVivo: "Live prices and availability from their store. Updated:",
+      notaPrecios: "Prices in Mexican pesos taken from their store on November 23, 2026. They may change.",
+      hSala: "Try it in a room",
+      subSala: "Pick a rug and see how it looks on the floor. Change the size or the wall color.",
+      tam: "Size", tamChico: "1 × 1.5 m", tamGrande: "2 × 3 m", pared: "Wall",
+      salaNota: "Illustrative simulation using the rug's real photo.",
+      comprarEste: "Buy this rug",
+      cifAnios: "years importing rugs", cifDisenos: "designs in the store", cifSuc: "stores",
+      hNosotros: "Direct makers and importers",
+      nos1: "Since 2005 we bring high-quality rugs from Persia, Iran. We also make unique, custom designs.",
+      nos2: "We work in Rustic, Classic, Modern and Kilim styles, and offer cleaning, restoration and sanitizing.",
+      hServicios: "Care for your rugs",
+      subServicios: "Cleaning, restoration and sanitizing for rugs, carpets, upholstery and mattresses.",
+      hCotizar: "Get a quote",
+      subCotizar: "Fill in these details and we'll send your quote on WhatsApp.",
+      cServicio: "Service", cPieza: "What you'll bring", cMedidas: "Approximate size (m)",
+      cLargo: "Length", cAncho: "Width", cSucursal: "Nearest store", cNotas: "Comments (optional)",
+      cNotasPh: "Stains, damage, weave type…", cEnviar: "Send quote request on WhatsApp",
+      cFotos: "After sending the message, attach 2 or 3 photos in the chat.",
+      hSucursales: "Visit a store", comoLlegar: "Get directions",
+      hGaleria: "In our stores",
+      bannerTxt: "Every rug tells a story centuries old.",
+      ctaFinal: "Looking for a rug, or want to restore yours?",
+      ctaFinalSub: "Message us and we'll help with size, style and care.",
+      contacto: "Contact", siguenos: "Follow us",
+      derechos: "All rights reserved.",
+      demo: "Design sample. Prices and details taken from tapetesrishe.mx."
+    }
+  }
+};
+
+(function(){
+  const c = CONFIG.colores, r = document.documentElement.style;
+  Object.keys(c).forEach(k => r.setProperty("--" + k, c[k]));
+  r.setProperty("--display", '"' + CONFIG.tipografia.display + '", "Didot", ui-serif, Georgia, serif');
+  r.setProperty("--texto", '"' + CONFIG.tipografia.texto + '", "Futura", system-ui, sans-serif');
+  document.querySelector('meta[name="theme-color"]').content = c.tinta;
+})();
+</script>
+
+<style>
+:root{--curva:cubic-bezier(.2,.7,.2,1);--max:1220px;--borde:clamp(1.1rem,5vw,2.6rem)}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;font-family:var(--texto);font-size:1.02rem;line-height:1.62;color:var(--tinta);
+  background:var(--lana);-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{display:block;max-width:100%}
+a{color:inherit}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+h1,h2,h3,p,figure,ol,ul,address{margin:0}
+ul,ol{padding:0;list-style:none}
+address{font-style:normal}
+:focus-visible{outline:2px solid var(--carmin);outline-offset:3px}
+.oscuro :focus-visible,.hero :focus-visible,.pie :focus-visible,.sheet :focus-visible,.final :focus-visible{outline-color:var(--oro)}
+.salto{position:absolute;left:-9999px;top:0;z-index:300;padding:.8em 1.2em;background:var(--granate);color:var(--lana)}
+.salto:focus{left:0}
+
+.d1{font-family:var(--display);font-weight:300;line-height:.98;letter-spacing:-.02em;
+  font-size:clamp(2.7rem,11vw,6.2rem)}
+.d2{font-family:var(--display);font-weight:300;line-height:1.04;letter-spacing:-.015em;
+  font-size:clamp(2.1rem,7.4vw,3.9rem)}
+.cifra{font-family:var(--display);font-variant-numeric:lining-nums tabular-nums}
+.env{width:100%;max-width:var(--max);margin-inline:auto;padding-inline:var(--borde)}
+section[id],#cotizar{scroll-margin-top:72px}
+.sec{padding-block:clamp(4.2rem,11vw,8rem)}
+.oscuro{background:var(--tinta);color:var(--lana)}
+.noche{background:var(--noche);color:var(--lana)}
+.enc{margin-bottom:clamp(2rem,5vw,3.2rem);max-width:60ch}
+.enc p{margin-top:1rem;color:var(--humo);max-width:52ch}
+.oscuro .enc p,.noche .enc p{color:rgba(242,234,221,.72)}
+.menor{font-size:.84rem;color:var(--humo)}
+
+/* Medallón: figura central de un tapete persa, dibujada en SVG */
+.medallon-svg{display:block;width:100%;height:100%}
+
+/* Orla: franja de guarda como el borde de un tapete */
+.orla{height:16px;background:
+  radial-gradient(circle at 8px 8px,var(--oro) 0 2px,transparent 2.5px) 0 0/16px 16px,
+  linear-gradient(45deg,transparent 46%,rgba(201,164,106,.55) 47% 53%,transparent 54%) 0 0/16px 16px,
+  linear-gradient(-45deg,transparent 46%,rgba(201,164,106,.55) 47% 53%,transparent 54%) 0 0/16px 16px;
+  border-block:1px solid rgba(201,164,106,.5);opacity:.75}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;padding:1em 1.8em;
+  border:1px solid transparent;border-radius:999px;font-weight:500;font-size:.93rem;letter-spacing:.01em;
+  text-decoration:none;transition:background .3s var(--curva),color .3s,border-color .3s,transform .25s var(--curva)}
+.btn-oro{background:var(--oro);color:var(--tinta)}
+.btn-oro:hover{background:var(--lana);transform:translateY(-2px)}
+.btn-linea{border-color:rgba(242,234,221,.5)}
+.btn-linea:hover{border-color:var(--oro);color:var(--oro)}
+.btn-granate{background:var(--granate);color:var(--lana)}
+.btn-granate:hover{background:var(--tinta);transform:translateY(-2px)}
+.btn:active{transform:translateY(1px)}
+.enlace{background:none;border:0;padding:0;font-size:.86rem;font-weight:500;text-decoration:underline;
+  text-underline-offset:.3em;text-decoration-thickness:1px;color:var(--granate);transition:color .3s}
+.enlace:hover{color:var(--carmin)}
+
+/* ═══ Promo, barra, menú ═══════════════════════════════════════════════ */
+.promo{background:var(--granate);color:var(--lana);font-size:.8rem;text-align:center;padding:.55rem var(--borde);line-height:1.4}
+.promo b{font-weight:600;letter-spacing:.04em;color:#fff}
+.promo a{text-decoration:underline;text-underline-offset:.2em}
+.idioma{--inv:var(--tinta);display:inline-flex;border:1px solid currentColor;border-radius:999px;overflow:hidden}
+.idioma button{background:none;border:0;padding:.38em .75em;font-size:.72rem;font-weight:600;opacity:.6;transition:opacity .3s,background .3s}
+.idioma button[aria-pressed="true"]{opacity:1;background:currentColor}
+.idioma button[aria-pressed="true"] span{color:var(--inv)}
+.logo{display:inline-flex;align-items:center;text-decoration:none}
+.logo img{height:44px;width:auto;mix-blend-mode:screen}
+.logo-txt{display:none;font-family:var(--display);font-size:1.5rem;letter-spacing:.01em}
+.logo.sin-img .logo-txt,.logo.solo-txt .logo-txt{display:inline}
+.logo.solo-txt img{display:none}
+
+.barra{position:fixed;inset:0 0 auto 0;z-index:90;background:var(--tinta);color:var(--lana);
+  border-bottom:1px solid rgba(201,164,106,.25);transform:translateY(-102%);transition:transform .5s var(--curva)}
+
+.barra.visible{transform:none}
+.barra .idioma{--inv:var(--tinta)}
+.barra-in{display:flex;align-items:center;gap:.8rem;min-height:60px}
+.barra .logo{margin-right:auto}
+.barra .logo img{height:34px}
+.barra nav{display:none}
+@media(min-width:1000px){
+  .barra nav{display:flex;gap:1.5rem;margin-right:.6rem}
+  .barra nav a{text-decoration:none;font-size:.88rem;opacity:.8;transition:opacity .3s,color .3s}
+  .barra nav a:hover{opacity:1;color:var(--oro)}
+}
+.barra .btn{padding:.62em 1.25em;font-size:.84rem}
+.hamb{background:none;border:1px solid rgba(242,234,221,.5);border-radius:50%;width:42px;height:42px;display:grid;place-items:center}
+.hamb svg{width:16px;height:16px}
+@media(min-width:1000px){.hamb{display:none}}
+@media(max-width:420px){.barra .btn{display:none}}
+.sheet{position:fixed;inset:0;z-index:95;background:var(--tinta);color:var(--lana);display:grid;align-content:center;
+  padding:var(--borde);opacity:0;visibility:hidden;transition:opacity .4s var(--curva),visibility .4s}
+.sheet[data-abierto="true"]{opacity:1;visibility:visible}
+.sheet nav a{display:block;font-family:var(--display);font-weight:300;font-size:clamp(1.9rem,8vw,2.8rem);
+  text-decoration:none;padding:.25em 0;border-bottom:1px solid rgba(201,164,106,.2);transition:color .3s,padding-left .3s}
+.sheet nav a:hover{color:var(--oro);padding-left:.2em}
+.sheet .cerrar{position:absolute;top:var(--borde);right:var(--borde);background:none;border:1px solid currentColor;border-radius:999px;padding:.5em 1.2em;font-size:.85rem}
+
+/* ═══ Hero ═════════════════════════════════════════════════════════════ */
+.hero{position:relative;background:var(--tinta);color:var(--lana);overflow:clip;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;z-index:-2;
+  background:radial-gradient(60% 50% at 78% 42%,rgba(122,30,30,.55),transparent 70%),
+             radial-gradient(40% 40% at 10% 100%,rgba(122,30,30,.3),transparent 70%)}
+.hero-marco{position:absolute;inset:12px;border:1px solid rgba(201,164,106,.32);pointer-events:none;z-index:3}
+.hero-marco::after{content:"";position:absolute;inset:5px;border:1px solid rgba(201,164,106,.16)}
+.hero-medallon{position:absolute;z-index:-1;width:min(140vw,980px);aspect-ratio:1;right:-38%;top:2%;
+  color:var(--oro);opacity:.09;will-change:transform}
+@media(min-width:900px){.hero-medallon{right:-12%;top:-14%}}
+.hero-grid{display:grid;grid-template-areas:"top" "tapetes" "texto";gap:clamp(1.4rem,4vw,2rem);
+  padding-bottom:clamp(2.6rem,7vw,4rem)}
+@media(min-width:900px){
+  .hero-grid{grid-template-columns:1fr 1fr;grid-template-areas:"top top" "texto tapetes";
+    align-items:center;column-gap:clamp(2rem,5vw,4.5rem);min-height:min(92svh,860px)}
+}
+.hero-sup{grid-area:top;display:flex;align-items:center;justify-content:space-between;padding-top:clamp(1.4rem,4vh,2rem)}
+.hero-texto{grid-area:texto;position:relative;z-index:2}
+.kicker{display:inline-flex;align-items:center;gap:.7rem;font-size:.86rem;color:var(--oro);
+  opacity:0;animation:entra .9s var(--curva) .3s forwards}
+.kicker svg{width:18px;height:18px}
+.hero h1{margin-top:1rem}
+@media(min-width:900px){.hero .d1{font-size:clamp(3.6rem,5.6vw,5.4rem)}}
+.hero h1 .linea{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
+.hero h1 .linea>span{display:block;transform:translateY(110%);animation:sube 1.1s var(--curva) forwards}
+.hero h1 .l1>span{animation-delay:.45s}
+.hero h1 .l2>span{animation-delay:.6s}
+.hero-lema{margin-top:1.4rem;max-width:42ch;color:rgba(242,234,221,.82);font-size:clamp(1rem,3.2vw,1.12rem);
+  opacity:0;animation:entra .9s var(--curva) 1s forwards}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.9rem;opacity:0;animation:entra .9s var(--curva) 1.15s forwards}
+@keyframes sube{to{transform:none}}
+@keyframes entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* Pared de tapetes: uno principal que se desenrolla y dos colgados atrás */
+.tapetes{grid-area:tapetes;position:relative;width:min(80vw,420px);aspect-ratio:4/5.1;justify-self:center;margin-top:.6rem}
+@media(min-width:900px){.tapetes{width:min(100%,470px)}}
+.tap{position:absolute;perspective:1100px}
+.tap-in{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+.tap-foto{position:absolute;inset:0;overflow:hidden;background:linear-gradient(160deg,#5b1b18,#2a0f0d);
+  box-shadow:0 30px 50px -18px rgba(0,0,0,.75),0 0 0 1px rgba(201,164,106,.25)}
+.tap-foto img{width:100%;height:100%;object-fit:cover}
+.tap-foto.sin-img::after{content:"";position:absolute;inset:8%;border:1px solid rgba(201,164,106,.5);
+  background:radial-gradient(circle,rgba(201,164,106,.25) 0 18%,transparent 19%)}
+/* flecos */
+.flecos::before,.flecos::after{content:"";position:absolute;left:4%;right:4%;height:16px;z-index:2;
+  background:repeating-linear-gradient(90deg,rgba(242,234,221,.9) 0 1.5px,transparent 1.5px 4.5px);
+  -webkit-mask:linear-gradient(to var(--dir,bottom),#000 40%,transparent);mask:linear-gradient(to var(--dir,bottom),#000 40%,transparent)}
+.flecos::before{top:-15px;--dir:top}
+.flecos::after{bottom:-15px;--dir:bottom}
+.tap-a{inset:4% 6% 4% 8%;z-index:3}
+.tap-b{width:44%;aspect-ratio:3/4;left:-6%;top:-3%;z-index:1;opacity:0;animation:aparece 1.2s var(--curva) 1.5s forwards}
+.tap-c{width:40%;aspect-ratio:3/4;right:-7%;bottom:-2%;z-index:4;opacity:0;animation:aparece 1.2s var(--curva) 1.75s forwards}
+.tap-b .tap-in{transform:rotate(-7deg)}
+.tap-c .tap-in{transform:rotate(6deg)}
+@media(max-width:899px){.tap-b{left:-10%}.tap-c{right:-9%}}
+@keyframes aparece{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.tap-a .tap-in{animation:mece 9s ease-in-out 2.4s infinite alternate}
+@keyframes mece{from{transform:rotateY(-9deg) rotateX(3deg)}to{transform:rotateY(7deg) rotateX(-2deg)}}
+.desenrolla{clip-path:inset(0 0 100% 0);animation:desenrolla 1.9s cubic-bezier(.65,.05,.2,1) .2s forwards}
+@keyframes desenrolla{to{clip-path:inset(0 0 -20px 0)}}
+.rollo{position:absolute;left:-2%;right:-2%;height:9%;top:-4%;z-index:5;border-radius:999px;pointer-events:none;
+  background:linear-gradient(180deg,#2a0e0c 0%,#8b2a24 30%,#c4574a 48%,#6e1e1a 70%,#1c0807 100%);
+  box-shadow:0 16px 22px rgba(0,0,0,.55);top:-4.5%;
+  animation:rueda 1.9s cubic-bezier(.65,.05,.2,1) .2s forwards,fuera .35s ease 2.05s forwards}
+@keyframes rueda{to{top:95.5%;height:4%}}
+@keyframes fuera{to{opacity:0;transform:scaleY(.3)}}
+.precio-hero{position:absolute;z-index:6;left:-4%;bottom:12%;background:var(--lana);color:var(--tinta);
+  padding:.65rem .95rem .7rem;box-shadow:0 14px 26px rgba(0,0,0,.45);opacity:0;animation:entra .8s var(--curva) 2.2s forwards;
+  text-decoration:none;min-width:9.5rem}
+.precio-hero span{display:block;font-family:var(--display);font-size:1.15rem;line-height:1.1}
+.precio-hero small{display:block;font-size:.74rem;color:var(--humo);margin-top:.15rem}
+.precio-hero b{display:block;font-weight:600;color:var(--granate);margin-top:.25rem}
+
+.banda{background:var(--granate);color:var(--lana);overflow:hidden;padding-block:1rem}
+.banda-in{display:flex;gap:2.2rem;width:max-content;margin-left:-6%;white-space:nowrap;will-change:transform}
+.banda-in span{font-family:var(--display);font-weight:300;font-style:italic;font-size:clamp(1.4rem,4.8vw,2.2rem);line-height:1.2}
+.banda-in svg{width:16px;height:16px;align-self:center;color:var(--oro);flex:0 0 auto}
+
+/* ═══ Colección ════════════════════════════════════════════════════════ */
+.filtros{display:flex;gap:.5rem;overflow-x:auto;scrollbar-width:none;margin:0 calc(var(--borde)*-1) 2.4rem;padding:0 var(--borde) .2rem}
+.filtros::-webkit-scrollbar{display:none}
+.filtros button{flex:0 0 auto;background:none;border:1px solid rgba(18,13,11,.25);border-radius:999px;padding:.6em 1.15em;
+  font-size:.86rem;font-weight:500;transition:background .3s,color .3s,border-color .3s}
+.filtros button:hover{border-color:var(--granate)}
+.filtros button[aria-pressed="true"]{background:var(--tinta);color:var(--lana);border-color:var(--tinta)}
+.rejilla{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.6rem .9rem}
+@media(min-width:760px){.rejilla{grid-template-columns:repeat(3,minmax(0,1fr));gap:3.4rem 1.8rem}}
+@media(min-width:1100px){.rejilla{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.marco{position:relative;display:block;aspect-ratio:3/4}
+.marco .tap-foto{box-shadow:0 18px 30px -16px rgba(18,13,11,.55)}
+.marco .capa{position:absolute;inset:-6%;will-change:transform}
+.marco .flecos::before,.marco .flecos::after{height:11px;background:repeating-linear-gradient(90deg,rgba(214,200,178,1) 0 1.2px,transparent 1.2px 3.6px)}
+.marco .flecos::before{top:-10px}.marco .flecos::after{bottom:-10px}
+.tag{position:absolute;left:.55rem;top:.55rem;z-index:3;background:var(--granate);color:var(--lana);font-size:.7rem;
+  font-weight:500;padding:.28em .7em;border-radius:999px}
+.tap-foto.sin-img .letra{display:grid}
+.letra{display:none;position:absolute;inset:0;place-items:center;font-family:var(--display);font-size:3rem;color:var(--oro);z-index:1}
+.ficha-t h3{font-family:var(--display);font-weight:400;font-size:clamp(1.1rem,3.8vw,1.35rem);line-height:1.15;margin-top:1.35rem}
+.ficha-t .datos{font-size:.8rem;color:var(--humo);margin-top:.3rem}
+.ficha-t .precio{display:block;font-weight:600;font-size:1.02rem;margin-top:.45rem}
+.ficha-t .acciones{display:flex;flex-wrap:wrap;gap:.3rem 1.1rem;margin-top:.55rem}
+/* la entrada es una animación de una sola vez; después la tarjeta queda plana (sin 3D ni recorte) para que el cursor no la haga lenta */
+.wipe .marco{clip-path:inset(0 0 100% 0);transform:perspective(1000px) rotateY(var(--giro,0deg)) translateY(14px)}
+.wipe.dentro .marco{clip-path:none;transform:none;transition:transform .35s var(--curva);animation:cortina 1.1s var(--curva) backwards}
+@keyframes cortina{from{clip-path:inset(0 0 100% 0);transform:perspective(1000px) rotateY(var(--giro,0deg)) translateY(14px)}to{clip-path:inset(-20px 0);transform:none}}
+.marco .tap-foto img{transition:transform .9s var(--curva)}
+@media(hover:hover){
+  .ficha-t.dentro .marco:hover{transform:translateY(-6px)}
+  .marco:hover .tap-foto img{transform:scale(1.05)}
+}
+.tag.agot{background:var(--tinta)}
+.tag.reb{background:var(--oro);color:var(--tinta)}
+.ficha-t.agotado .tap-foto img{filter:grayscale(.6) brightness(.85)}
+.ficha-t s{font-size:.84rem;color:var(--humo);font-weight:400;margin-left:.5rem}
+.mas{display:flex;justify-content:center;margin-top:2.6rem}
+.mas button{background:none;border:1px solid var(--tinta);border-radius:999px;padding:.9em 1.8em;font-weight:500;transition:background .3s,color .3s}
+.mas button:hover{background:var(--tinta);color:var(--lana)}
+.ver-todos{margin-top:3rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem 2rem}
+
+.rv{opacity:0;transform:translateY(20px);transition:opacity .9s var(--curva),transform .9s var(--curva)}
+.rv.dentro{opacity:1;transform:none}
+
+/* ═══ Sala interactiva ═════════════════════════════════════════════════ */
+.sala-grid{display:grid;gap:1.6rem}
+.sala-grid>*{min-width:0}
+@media(min-width:960px){.sala-grid{grid-template-columns:1.6fr .9fr;align-items:center;gap:3rem}}
+.sala{--pa:#E9E0D1;--pb:#D8CCB8;position:relative;aspect-ratio:4/4.3;overflow:hidden;border-radius:4px;
+  background:linear-gradient(180deg,var(--pa),var(--pb));transition:background .6s;box-shadow:0 0 0 1px rgba(201,164,106,.3)}
+@media(min-width:600px){.sala{aspect-ratio:16/11}}
+.sala-luz{position:absolute;inset:0 0 40% 0;background:radial-gradient(55% 75% at 14% 30%,rgba(255,246,228,.55),transparent 70%);pointer-events:none}
+.ventana{position:absolute;left:7%;top:9%;width:15%;height:41%;border-radius:999px 999px 0 0;
+  background:linear-gradient(180deg,#f6efe2,#e2d6bf);box-shadow:inset 0 0 0 6px rgba(255,255,255,.35),0 0 40px rgba(255,244,222,.6)}
+.ventana::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:4px;margin-left:-2px;background:rgba(160,140,110,.35)}
+@media(max-width:599px){.ventana{width:20%;height:30%;top:10%}}
+.cuadro{position:absolute;right:20%;top:13%;width:16%;aspect-ratio:3/4;background:linear-gradient(135deg,#a88b5d,#5b4632);
+  box-shadow:0 0 0 5px #f5efe4,0 0 0 6px rgba(0,0,0,.12),0 10px 18px rgba(0,0,0,.15)}
+@media(max-width:599px){.cuadro{top:9%;width:22%;right:14%}}
+.zoclo{position:absolute;left:0;right:0;top:calc(var(--horizonte) - 1.6%);height:1.6%;background:#f2ece2;box-shadow:0 2px 4px rgba(0,0,0,.08)}
+.sala{--horizonte:57%}
+@media(max-width:599px){.sala{--horizonte:46%}}
+.piso{position:absolute;left:0;right:0;top:var(--horizonte);bottom:0;overflow:hidden}
+.piso svg{position:absolute;inset:0;width:100%;height:100%}
+.escena{position:absolute;left:0;right:0;top:var(--horizonte);bottom:0;perspective:780px;perspective-origin:50% -40%}
+.plano{position:absolute;left:50%;bottom:9%;width:var(--ancho,58%);aspect-ratio:4/3;
+  transform:translateX(-50%) rotateX(62deg);transform-origin:50% 100%;transition:width .7s var(--curva)}
+@media(max-width:599px){.plano{bottom:12%;--ancho-m:1}}
+.plano-foto{position:absolute;inset:0;overflow:hidden;background:#7a1e1e;box-shadow:0 30px 40px -10px rgba(0,0,0,.45)}
+.plano-foto img{position:absolute;left:50%;top:50%;width:75%;height:133.34%;max-width:none;object-fit:cover;
+  transform:translate(-50%,-50%) rotate(90deg) scale(1.12);transition:opacity .45s}
+.plano-foto::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(0,0,0,.28),transparent 45%,rgba(255,240,215,.06)),
+             radial-gradient(70% 90% at 20% 0%,rgba(255,244,220,.18),transparent 60%)}
+.plano .fl{position:absolute;top:3%;bottom:3%;width:4%;
+  background:repeating-linear-gradient(180deg,#efe6d4 0 2px,transparent 2px 5px)}
+.plano .fl.i{left:-3.6%;-webkit-mask:linear-gradient(to left,#000 40%,transparent);mask:linear-gradient(to left,#000 40%,transparent)}
+.plano .fl.d{right:-3.6%;-webkit-mask:linear-gradient(to right,#000 40%,transparent);mask:linear-gradient(to right,#000 40%,transparent)}
+.plano-foto.sin-img::before{content:"";position:absolute;inset:7%;border:2px solid rgba(201,164,106,.6);z-index:1}
+.sofa{position:absolute;left:50%;transform:translateX(-50%);width:62%;bottom:calc(100% - var(--horizonte) - 8%);z-index:1}
+@media(max-width:599px){.sofa{width:86%;bottom:calc(100% - var(--horizonte) - 9%)}}
+.sofa svg,.planta svg,.lampara svg{display:block;width:100%;height:auto}
+.planta{position:absolute;right:3%;width:15%;bottom:calc(100% - var(--horizonte) - 14%);z-index:3}
+.lampara{position:absolute;left:4%;width:9%;bottom:calc(100% - var(--horizonte) - 6%);z-index:1}
+@media(max-width:599px){.lampara{display:none}.planta{width:20%;right:-2%}}
+.sala-panel h3{font-family:var(--display);font-weight:400;font-size:clamp(1.5rem,4.6vw,2rem);line-height:1.15}
+.sala-panel .datos{color:rgba(242,234,221,.7);font-size:.9rem;margin-top:.35rem}
+.sala-panel .precio{font-weight:600;font-size:1.2rem;color:var(--oro);margin-top:.6rem;display:block}
+.control{margin-top:1.4rem}
+.control-t{font-size:.82rem;color:rgba(242,234,221,.65);margin-bottom:.55rem}
+.minis{display:flex;gap:.55rem;overflow-x:auto;padding:.3rem .1rem .6rem;scrollbar-width:thin}
+.mini{flex:0 0 auto;width:58px;aspect-ratio:3/4;padding:0;border:0;background:#3a1a16;position:relative;overflow:hidden;
+  outline:1px solid rgba(201,164,106,.25);outline-offset:0;transition:outline-color .3s,transform .3s}
+.mini img{width:100%;height:100%;object-fit:cover}
+.mini[aria-pressed="true"]{outline:2px solid var(--oro);outline-offset:3px}
+.mini:hover{transform:translateY(-3px)}
+.mini.sin-img img{display:none}
+.mini.sin-img::after{content:attr(data-letra);position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);color:var(--oro)}
+.pildoras{display:flex;flex-wrap:wrap;gap:.45rem}
+.pildoras button{background:none;border:1px solid rgba(242,234,221,.3);border-radius:999px;padding:.5em 1em;font-size:.84rem;
+  display:inline-flex;align-items:center;gap:.5em;transition:border-color .3s,background .3s,color .3s}
+.pildoras button[aria-pressed="true"]{background:var(--lana);color:var(--tinta);border-color:var(--lana)}
+.pildoras i{width:14px;height:14px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)}
+.sala-panel .btn{margin-top:1.6rem}
+.sala-nota{margin-top:1rem;font-size:.76rem;color:rgba(242,234,221,.5)}
+
+/* ═══ Cifras ═══════════════════════════════════════════════════════════ */
+.cifras{display:grid;grid-template-columns:repeat(3,1fr);text-align:center}
+.cifras li{padding:clamp(1.8rem,6vw,3rem) .4rem}
+.cifras li+li{border-left:1px solid rgba(201,164,106,.35)}
+.cifras .n{display:block;font-size:clamp(2.4rem,9vw,4.4rem);font-weight:300;line-height:1;color:var(--oro)}
+.cifras .et{display:block;font-size:.82rem;margin-top:.6rem;color:rgba(242,234,221,.78);max-width:16ch;margin-inline:auto}
+
+/* ═══ Nosotros ═════════════════════════════════════════════════════════ */
+#nosotros{overflow-x:clip}
+.nos{display:grid;gap:clamp(2.4rem,7vw,4rem);align-items:center}
+@media(min-width:900px){.nos{grid-template-columns:1fr 1fr}}
+.nos-foto{position:relative;aspect-ratio:4/5;width:min(100%,480px);justify-self:center}
+.nos-foto .marco-img{position:absolute;inset:0;overflow:hidden;background:var(--lino);box-shadow:0 0 0 1px rgba(122,30,30,.2)}
+.nos-foto .marco-img .capa{position:absolute;inset:-8% 0;will-change:transform}
+.nos-foto .marco-img img{width:100%;height:100%;object-fit:cover}
+.nos-foto .med{position:absolute;width:34%;aspect-ratio:1;right:-8%;bottom:-6%;color:var(--granate);
+  background:var(--lana);border-radius:50%;padding:6%;box-shadow:0 0 0 1px rgba(122,30,30,.25);will-change:transform}
+@media(max-width:899px){.nos-foto .med{right:0;bottom:-8%}}
+.nos-texto .d2{margin-bottom:1.6rem}
+.nos-texto p{max-width:50ch}
+.nos-texto p+p{margin-top:1.1rem}
+.estilos{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:1.6rem}
+.estilos span{border:1px solid rgba(122,30,30,.35);color:var(--granate);border-radius:999px;padding:.35em .9em;font-size:.82rem}
+
+/* ═══ Servicios + cotizador ════════════════════════════════════════════ */
+.servs{display:grid;gap:1.2rem}
+@media(min-width:800px){.servs{grid-template-columns:repeat(3,1fr);gap:1.6rem}}
+.serv{position:relative;min-height:clamp(300px,52vw,420px);overflow:hidden;display:flex;align-items:flex-end;
+  background:linear-gradient(160deg,#4a1714,#160c0a)}
+.serv .capa{position:absolute;inset:-10% 0;will-change:transform}
+.serv .capa img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s var(--curva)}
+.serv:hover .capa img{transform:scale(1.06)}
+.serv::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(18,13,11,.92),rgba(18,13,11,.15) 65%)}
+.serv-txt{position:relative;z-index:2;padding:1.6rem 1.5rem}
+.serv h3{font-family:var(--display);font-weight:300;font-size:clamp(1.7rem,5.6vw,2.2rem);line-height:1.1;color:var(--lana)}
+.serv p{margin-top:.5rem;font-size:.92rem;color:rgba(242,234,221,.8);max-width:36ch}
+
+.cotiza{display:grid;gap:2.4rem;margin-top:clamp(3.5rem,9vw,6rem);background:var(--lana);color:var(--tinta);
+  padding:clamp(1.6rem,5vw,3.4rem);position:relative}
+.cotiza::before{content:"";position:absolute;inset:8px;border:1px solid rgba(122,30,30,.25);pointer-events:none}
+@media(min-width:900px){.cotiza{grid-template-columns:.85fr 1.15fr;gap:3.6rem;align-items:start}}
+.cotiza .d2{color:var(--granate)}
+.cotiza .enc p{color:var(--humo)}
+.cotiza .med-c{width:110px;color:var(--granate);margin-top:1.8rem;opacity:.85}
+@media(max-width:899px){.cotiza .med-c{display:none}}
+form{display:grid;gap:1.3rem;position:relative}
+fieldset{border:0;margin:0;padding:0;min-width:0}
+legend,.etq{display:block;font-size:.84rem;font-weight:500;margin-bottom:.55rem;padding:0}
+.opciones{display:flex;flex-wrap:wrap;gap:.45rem}
+.opciones label{position:relative;cursor:pointer}
+.opciones input{position:absolute;opacity:0;width:1px;height:1px}
+.opciones span{display:inline-block;border:1px solid rgba(18,13,11,.28);border-radius:999px;padding:.55em 1.05em;font-size:.88rem;transition:background .25s,color .25s,border-color .25s}
+.opciones input:checked+span{background:var(--granate);border-color:var(--granate);color:var(--lana)}
+.opciones input:focus-visible+span{outline:2px solid var(--carmin);outline-offset:2px}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.campo input,.campo select,.campo textarea{width:100%;background:#fff;border:1px solid rgba(18,13,11,.22);border-radius:6px;
+  padding:.78em .9em;font-size:16px;transition:border-color .25s}
+.campo input:focus,.campo select:focus,.campo textarea:focus{border-color:var(--granate);outline:none;box-shadow:0 0 0 3px rgba(122,30,30,.15)}
+.campo textarea{min-height:88px;resize:vertical}
+.campo small{display:block;font-size:.76rem;color:var(--humo);margin-top:.3rem}
+form .btn{justify-self:start}
+.form-nota{font-size:.8rem;color:var(--humo)}
+
+/* ═══ Galería y banner ═════════════════════════════════════════════════ */
+.galeria{overflow:hidden;padding-block:clamp(3rem,8vw,5rem) 0}
+.galeria .env{margin-bottom:1.8rem}
+.tira{display:flex;gap:1rem;width:max-content;will-change:transform;padding-left:var(--borde)}
+.tira figure{width:clamp(200px,42vw,340px);aspect-ratio:4/5;overflow:hidden;background:var(--lino);flex:0 0 auto}
+.tira figure:nth-child(even){margin-top:2.4rem}
+.tira img{width:100%;height:100%;object-fit:cover}
+.tira figure.sin-img{display:none}
+.banner{position:relative;height:clamp(380px,74vh,660px);overflow:hidden;background:var(--granate);color:var(--lana);margin-top:clamp(3rem,8vw,5rem)}
+.banner .capa{position:absolute;inset:-16% 0;will-change:transform}
+.banner .capa img{width:100%;height:100%;object-fit:cover}
+.banner::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(18,13,11,.85),rgba(18,13,11,.05) 60%)}
+.banner .env{position:absolute;left:0;right:0;bottom:0;z-index:2;padding-bottom:clamp(2rem,6vw,3.6rem)}
+.banner .d2{max-width:15ch}
+
+/* ═══ Sucursales ═══════════════════════════════════════════════════════ */
+.sucs{display:grid;gap:1rem}
+@media(min-width:800px){.sucs{grid-template-columns:repeat(3,1fr);gap:1.4rem}}
+.suc{border:1px solid rgba(18,13,11,.16);padding:1.6rem 1.5rem 1.7rem;background:rgba(255,255,255,.35);
+  display:flex;flex-direction:column;transition:border-color .3s,transform .4s var(--curva)}
+.suc:hover{border-color:var(--granate);transform:translateY(-4px)}
+.suc .ciudad{font-size:.8rem;color:var(--granate);font-weight:500}
+.suc h3{font-family:var(--display);font-weight:300;font-size:clamp(1.7rem,5vw,2.1rem);line-height:1.1;margin-top:.3rem}
+.suc address{margin-top:.8rem;font-size:.94rem;line-height:1.6;flex:1}
+.suc .btn{margin-top:1.4rem;align-self:flex-start;padding:.75em 1.4em}
+.contacto-fila{margin-top:2.4rem;display:flex;flex-wrap:wrap;gap:.6rem 2rem;font-size:.95rem}
+.contacto-fila a{text-decoration:none;border-bottom:1px solid rgba(122,30,30,.35)}
+.contacto-fila a:hover{color:var(--granate)}
+
+/* ═══ Final y pie ══════════════════════════════════════════════════════ */
+.final{position:relative;overflow:clip;background:var(--tinta);color:var(--lana);text-align:center;padding-block:clamp(5rem,15vw,9rem)}
+.final .capa{position:absolute;inset:-14% 0;opacity:.5;will-change:transform}
+.final .capa img{width:100%;height:100%;object-fit:cover}
+.final::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 50%,rgba(18,13,11,.45),rgba(18,13,11,.9))}
+.final .env{position:relative;z-index:2}
+.final .med-f{width:64px;margin:0 auto 1.6rem;color:var(--oro)}
+.final p{margin:1rem auto 0;max-width:42ch;color:rgba(242,234,221,.82)}
+.final .btn{margin-top:2rem}
+.pie{background:var(--tinta);color:var(--lana);padding-block:clamp(3rem,8vw,4.4rem) 7rem}
+.pie-grid{display:grid;gap:2.2rem}
+@media(min-width:760px){.pie-grid{grid-template-columns:1.3fr 1fr 1fr}}
+.pie a{text-decoration:none;color:rgba(242,234,221,.8);transition:color .3s}
+.pie a:hover{color:var(--oro)}
+.pie h3{font-size:.82rem;font-weight:500;color:var(--oro);margin-bottom:.9rem}
+.pie li{padding:.2rem 0;font-size:.92rem}
+.pie .logo img{height:56px}
+.pie-abajo{margin-top:2.4rem;padding-top:1.2rem;border-top:1px solid rgba(242,234,221,.14);display:flex;flex-wrap:wrap;gap:.5rem 1.4rem;font-size:.79rem;color:rgba(242,234,221,.58)}
+
+.wa{position:fixed;z-index:80;right:max(var(--borde),1rem);bottom:calc(1rem + env(safe-area-inset-bottom));
+  display:inline-flex;align-items:center;gap:.55em;background:var(--granate);color:var(--lana);text-decoration:none;
+  padding:.85em 1.15em;border-radius:999px;font-size:.9rem;font-weight:500;border:1px solid var(--oro);
+  box-shadow:0 12px 26px rgba(18,13,11,.4);transform:translateY(150%);transition:transform .55s var(--curva),background .3s}
+.wa.visible{transform:none}
+.wa:hover{background:var(--tinta)}
+.wa svg{width:21px;height:21px;fill:currentColor;flex:0 0 auto}
+.wa .txt{display:none}
+@media(min-width:640px){.wa .txt{display:inline}}
+
+.sin-img img{display:none!important}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-delay:0ms!important;transition-duration:.001ms!important;transition-delay:0ms!important}
+  .hero h1 .linea>span{transform:none!important}
+  .kicker,.hero-lema,.hero-ctas,.tap-b,.tap-c,.precio-hero{opacity:1!important}
+  .desenrolla{clip-path:none!important}
+  .rollo{display:none!important}
+  .tap-a .tap-in{animation:none!important}
+  .rv{opacity:1!important;transform:none!important}
+  .wipe .marco{clip-path:none!important;transform:none!important;animation:none!important}
+  [data-mov]{transform:none!important}
+  .banda-in{margin-left:0!important}
+  .wa{transform:none!important}
+}
+</style>
+</head>
+
+<body>
+<a class="salto" href="#contenido" data-t="saltar">Saltar al contenido</a>
+
+<header class="barra" id="barra">
+  <div class="env barra-in">
+    <a class="logo" href="#inicio" data-img-cont aria-label="Tapetes Rishe">
+      <img data-logo alt="" decoding="async"><span class="logo-txt" data-marca>Tapetes Rishe</span>
+    </a>
+    <nav aria-label="Secciones">
+      <a href="#coleccion"  data-t="navColeccion">Colección</a>
+      <a href="#sala"       data-t="navSala">Pruébalo en tu sala</a>
+      <a href="#servicios"  data-t="navServicios">Servicios</a>
+      <a href="#cotizar"    data-t="navCotizar">Cotizar</a>
+      <a href="#sucursales" data-t="navSucursales">Sucursales</a>
+    </nav>
+    <div class="idioma" role="group" data-t-aria="idioma" aria-label="Cambiar idioma">
+      <button type="button" data-lang="es" aria-pressed="true"><span>ES</span></button>
+      <button type="button" data-lang="en" aria-pressed="false"><span>EN</span></button>
+    </div>
+    <a class="btn btn-oro" data-tienda href="#" target="_blank" rel="noopener" data-t="navTienda">Tienda</a>
+    <button class="hamb" type="button" id="abrirMenu" data-t-aria="menu" aria-label="Menú" aria-expanded="false" aria-controls="sheet">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 3h16M0 8h16M0 13h16" stroke="currentColor" stroke-width="1.4" fill="none"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" data-abierto="false" role="dialog" aria-modal="true" aria-label="Menú" hidden>
+  <button class="cerrar" type="button" id="cerrarMenu" data-t="cerrar">Cerrar</button>
+  <nav>
+    <a href="#coleccion"  data-t="navColeccion">Colección</a>
+    <a href="#sala"       data-t="navSala">Pruébalo en tu sala</a>
+    <a href="#servicios"  data-t="navServicios">Servicios</a>
+    <a href="#cotizar"    data-t="navCotizar">Cotizar</a>
+    <a href="#sucursales" data-t="navSucursales">Sucursales</a>
+  </nav>
+</div>
+
+<p class="promo" id="promo"></p>
+
+<main id="contenido">
+
+<section class="hero" id="inicio">
+  <div class="hero-marco" aria-hidden="true"></div>
+  <div class="hero-medallon" id="heroMed" data-medallon aria-hidden="true"></div>
+  <div class="env hero-grid">
+    <div class="hero-sup">
+      <a class="logo" href="#inicio" data-img-cont aria-label="Tapetes Rishe">
+        <img data-logo alt="" decoding="async"><span class="logo-txt" data-marca>Tapetes Rishe</span>
+      </a>
+      <div class="idioma" role="group" data-t-aria="idioma" aria-label="Cambiar idioma">
+        <button type="button" data-lang="es" aria-pressed="true"><span>ES</span></button>
+        <button type="button" data-lang="en" aria-pressed="false"><span>EN</span></button>
+      </div>
+    </div>
+
+    <div class="tapetes" id="tapetes" aria-hidden="true">
+      <div class="tap tap-b" id="tapB"><div class="tap-in"><div class="tap-foto" data-img-cont><img id="imgB" alt="" decoding="async"></div></div></div>
+      <div class="tap tap-a">
+        <div class="tap-in">
+          <div class="desenrolla flecos" style="position:absolute;inset:0">
+            <div class="tap-foto" data-img-cont><img id="imgA" alt="" decoding="async" fetchpriority="high"></div>
+          </div>
+          <span class="rollo"></span>
+        </div>
+      </div>
+      <div class="tap tap-c" id="tapC"><div class="tap-in"><div class="tap-foto" data-img-cont><img id="imgC" alt="" decoding="async"></div></div></div>
+      <a class="precio-hero" id="precioHero" href="#" target="_blank" rel="noopener" tabindex="-1"></a>
+    </div>
+
+    <div class="hero-texto" id="heroTexto">
+      <p class="kicker"><span data-estrella></span><span data-t="heroKicker">Importadores desde 2005</span></p>
+      <h1 class="d1">
+        <span class="linea l1"><span data-t="heroT1">Tradición y cultura</span></span>
+        <span class="linea l2"><span data-t="heroT2">en cada nudo.</span></span>
+      </h1>
+      <p class="hero-lema" data-t="heroLema"></p>
+      <div class="hero-ctas">
+        <a class="btn btn-oro" href="#coleccion" data-t="ctaVer">Ver la colección</a>
+        <a class="btn btn-linea" href="#cotizar" data-t="ctaCotizar">Cotizar una limpieza</a>
+      </div>
+    </div>
+  </div>
+  <div class="orla" aria-hidden="true"></div>
+</section>
+
+<div class="banda" aria-hidden="true"><div class="banda-in" id="banda"></div></div>
+
+<section class="sec" id="coleccion">
+  <div class="env">
+    <div class="enc rv"><h2 class="d2" data-t="hColeccion">La colección</h2><p data-t="subColeccion"></p></div>
+    <div class="filtros rv" role="group" id="filtros"></div>
+    <div class="rejilla" id="rejilla"></div>
+    <div class="mas" id="mas" hidden><button type="button" id="btnMas"></button></div>
+    <div class="ver-todos rv">
+      <p class="menor" id="notaPrecios"></p>
+      <a class="btn btn-granate" data-tienda href="#" target="_blank" rel="noopener" data-t="verTodos">Ver los 60 diseños</a>
+    </div>
+  </div>
+</section>
+
+<section class="sec noche" id="sala">
+  <div class="env">
+    <div class="enc rv"><h2 class="d2" data-t="hSala">Pruébalo en una sala</h2><p data-t="subSala"></p></div>
+    <div class="sala-grid">
+      <div class="sala rv" id="escenaSala" role="img" aria-label="">
+        <div class="sala-luz"></div>
+        <div class="ventana"></div>
+        <div class="cuadro"></div>
+        <div class="zoclo"></div>
+        <div class="piso"><svg viewBox="0 0 1000 500" preserveAspectRatio="none" aria-hidden="true" id="pisoSvg"></svg></div>
+        <div class="lampara"><svg viewBox="0 0 60 300"><path d="M30 70V292" stroke="#2b2420" stroke-width="3"/><ellipse cx="30" cy="294" rx="18" ry="4" fill="#2b2420"/><path d="M10 70 18 18h24l8 52z" fill="#efe4cf"/><path d="M10 70 18 18h24l8 52z" fill="url(#lg)" opacity=".5"/><defs><linearGradient id="lg" x1="0" x2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#b8a582"/></linearGradient></defs></svg></div>
+        <div class="sofa"><svg viewBox="0 0 400 170">
+          <ellipse cx="200" cy="164" rx="196" ry="7" fill="rgba(0,0,0,.22)"/>
+          <rect x="34" y="10" width="332" height="92" rx="18" fill="#cdc2b0"/>
+          <rect x="6" y="56" width="56" height="98" rx="16" fill="#c2b6a2"/>
+          <rect x="338" y="56" width="56" height="98" rx="16" fill="#c2b6a2"/>
+          <rect x="52" y="88" width="148" height="56" rx="12" fill="#d8cebe"/>
+          <rect x="200" y="88" width="148" height="56" rx="12" fill="#d3c8b6"/>
+          <rect x="60" y="34" width="70" height="58" rx="10" fill="#7a1e1e" transform="rotate(-6 95 63)"/>
+          <rect x="268" y="36" width="64" height="54" rx="10" fill="#c9a46a" transform="rotate(5 300 63)"/>
+          <rect x="150" y="42" width="58" height="48" rx="9" fill="#e9e1d3"/>
+          <rect x="24" y="152" width="8" height="12" fill="#3b2b22"/><rect x="368" y="152" width="8" height="12" fill="#3b2b22"/>
+        </svg></div>
+        <div class="escena">
+          <div class="plano" id="plano">
+            <span class="fl i"></span><span class="fl d"></span>
+            <div class="plano-foto" data-img-cont><img id="imgSala" alt="" decoding="async"></div>
+          </div>
+        </div>
+        <div class="planta"><svg viewBox="0 0 120 240">
+          <path d="M60 150C40 110 10 100 4 60c30 6 46 30 56 70M60 150c4-50 20-80 44-110 6 40-10 80-40 112M60 150C50 90 56 40 70 8c14 40 6 90-8 140" fill="#5f6b4a"/>
+          <path d="M60 150C30 130 14 128 2 112c26-2 44 12 58 34M60 150c22-24 40-30 58-30-12 18-30 30-56 34" fill="#4b5639"/>
+          <path d="M30 150h60l-8 84H38z" fill="#d9cdb8"/><path d="M30 150h60l-2 14H32z" fill="#c8b99f"/>
+          <ellipse cx="60" cy="236" rx="34" ry="5" fill="rgba(0,0,0,.2)"/>
+        </svg></div>
+      </div>
+
+      <div class="sala-panel rv">
+        <h3 id="salaNombre"></h3>
+        <p class="datos" id="salaDatos"></p>
+        <span class="precio" id="salaPrecio"></span>
+        <div class="control"><p class="control-t" id="minisT"></p><div class="minis" id="minis" role="group"></div></div>
+        <div class="control"><p class="control-t" data-t="tam">Tamaño</p><div class="pildoras" id="tamanos" role="group"></div></div>
+        <div class="control"><p class="control-t" data-t="pared">Pared</p><div class="pildoras" id="paredes" role="group"></div></div>
+        <a class="btn btn-oro" id="salaComprar" href="#" target="_blank" rel="noopener" data-t="comprarEste">Comprar este tapete</a>
+        <p class="sala-nota" data-t="salaNota"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="oscuro" style="background:var(--granate)">
+  <div class="env"><ul class="cifras rv" id="cifras"></ul></div>
+</section>
+
+<section class="sec" id="nosotros">
+  <div class="env nos">
+    <div class="nos-foto rv" aria-hidden="true">
+      <div class="marco-img" data-img-cont><div class="capa" id="capaNos"><img id="imgNos" alt="" loading="lazy" decoding="async"></div></div>
+      <div class="med" id="medNos" data-medallon></div>
+    </div>
+    <div class="nos-texto rv">
+      <h2 class="d2" data-t="hNosotros">Fabricantes e importadores directos</h2>
+      <p data-t="nos1"></p>
+      <p data-t="nos2"></p>
+      <div class="estilos" id="estilos"></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec oscuro" id="servicios">
+  <div class="env">
+    <div class="enc rv"><h2 class="d2" data-t="hServicios">El cuidado de tus tapetes</h2><p data-t="subServicios"></p></div>
+    <div class="servs" id="servs"></div>
+
+    <div class="cotiza rv" id="cotizar">
+      <div>
+        <div class="enc" style="margin-bottom:0"><h2 class="d2" data-t="hCotizar">Cotiza tu servicio</h2><p data-t="subCotizar"></p></div>
+        <div class="med-c" data-medallon aria-hidden="true"></div>
+      </div>
+      <form id="formCotiza" novalidate>
+        <fieldset><legend data-t="cServicio">Servicio</legend><div class="opciones" id="optServicio"></div></fieldset>
+        <fieldset><legend data-t="cPieza">Qué vas a traer</legend><div class="opciones" id="optPieza"></div></fieldset>
+        <fieldset class="campo"><legend data-t="cMedidas">Medidas aproximadas (m)</legend>
+          <div class="dos">
+            <label><span class="etq" style="font-weight:400" data-t="cLargo">Largo</span><input type="number" id="cLargo" inputmode="decimal" min="0.1" step="0.1" placeholder="2.0"></label>
+            <label><span class="etq" style="font-weight:400" data-t="cAncho">Ancho</span><input type="number" id="cAncho" inputmode="decimal" min="0.1" step="0.1" placeholder="1.5"></label>
+          </div>
+        </fieldset>
+        <label class="campo"><span class="etq" data-t="cSucursal">Sucursal más cercana</span><select id="cSucursal"></select></label>
+        <label class="campo"><span class="etq" data-t="cNotas">Comentarios (opcional)</span><textarea id="cNotas" data-t-ph="cNotasPh"></textarea></label>
+        <button class="btn btn-granate" type="submit" data-t="cEnviar">Enviar cotización por WhatsApp</button>
+        <p class="form-nota" data-t="cFotos"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="galeria" aria-labelledby="hGal">
+  <div class="env rv"><h2 class="d2" id="hGal" data-t="hGaleria">En nuestras sucursales</h2></div>
+  <div class="tira" id="tira"></div>
+</section>
+
+<section class="banner" aria-label="Tapetes Rishe">
+  <div class="capa" id="capaBanner" data-img-cont><img id="imgBanner" alt="" loading="lazy" decoding="async"></div>
+  <div class="env rv"><p class="d2" data-t="bannerTxt"></p></div>
+</section>
+
+<section class="sec" id="sucursales">
+  <div class="env">
+    <div class="enc rv"><h2 class="d2" data-t="hSucursales">Visita una sucursal</h2></div>
+    <div class="sucs" id="sucs"></div>
+    <div class="contacto-fila rv" id="contactoFila"></div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="capa" id="capaFinal" data-img-cont><img id="imgFinal" alt="" loading="lazy" decoding="async"></div>
+  <div class="env rv">
+    <div class="med-f" data-medallon aria-hidden="true"></div>
+    <h2 class="d2" data-t="ctaFinal"></h2>
+    <p data-t="ctaFinalSub"></p>
+    <a class="btn btn-oro" data-wa href="#" target="_blank" rel="noopener" data-t="ctaWhatsapp">Escríbenos por WhatsApp</a>
+  </div>
+</section>
+</main>
+
+<div class="orla" aria-hidden="true" style="background-color:var(--tinta)"></div>
+<footer class="pie">
+  <div class="env">
+    <div class="pie-grid">
+      <div>
+        <a class="logo" href="#inicio" data-img-cont aria-label="Tapetes Rishe">
+          <img data-logo alt="" loading="lazy" decoding="async"><span class="logo-txt" data-marca>Tapetes Rishe</span>
+        </a>
+        <p class="menor" style="margin-top:1rem;color:rgba(242,234,221,.6);max-width:34ch" data-t="heroKicker"></p>
+      </div>
+      <div><h3 data-t="contacto">Contacto</h3><ul id="pieContacto"></ul></div>
+      <div><h3 data-t="navSucursales">Sucursales</h3><ul id="pieSucs"></ul></div>
+    </div>
+    <div class="pie-abajo"><span id="pieCopy"></span><a id="pieCredito" href="#"></a><span id="pieDemo" data-t="demo" hidden></span></div>
+  </div>
+</footer>
+
+<a class="wa" id="waFlotante" data-wa href="#" target="_blank" rel="noopener">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.32 4.97L2 22l5.25-1.38a9.9 9.9 0 004.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0012.04 2zm0 1.67c2.2 0 4.26.86 5.82 2.42a8.2 8.2 0 012.41 5.82c0 4.54-3.7 8.24-8.24 8.24a8.23 8.23 0 01-4.19-1.15l-.3-.18-3.11.82.83-3.04-.19-.31a8.2 8.2 0 01-1.26-4.38c0-4.54 3.7-8.24 8.23-8.24zm-2.6 4.1c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.23.9 2.42 1.02 2.59.13.16 1.74 2.66 4.21 3.63 2.06.8 2.48.64 2.93.6.45-.04 1.44-.59 1.65-1.16.2-.57.2-1.06.14-1.16-.06-.1-.23-.16-.48-.29-.25-.12-1.44-.71-1.66-.79-.22-.08-.39-.12-.55.12-.17.25-.63.8-.78.96-.14.17-.29.19-.53.07-.25-.13-1.04-.39-1.98-1.23-.73-.65-1.23-1.46-1.37-1.71-.15-.25-.02-.38.1-.5.11-.12.25-.3.37-.45.12-.15.17-.26.25-.43.08-.17.04-.31-.02-.43-.06-.12-.54-1.32-.75-1.8-.2-.47-.4-.4-.55-.4h-.17z"/></svg>
+  <span class="txt" data-t="ctaWhatsapp">Escríbenos por WhatsApp</span>
+</a>
+
+<script>
+(function(){
+  "use strict";
+  const C = CONFIG, M = C.movimiento;
+  const menos = matchMedia('(prefers-reduced-motion: reduce)');
+  const movil = matchMedia('(max-width: 599px)');
+  const $ = (s,r)=>(r||document).querySelector(s), $$ = (s,r)=>Array.from((r||document).querySelectorAll(s));
+  const esc = s => String(s).replace(/[&<>"]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+
+  document.addEventListener('error', e => { const el = e.target; if (el && el.tagName === 'IMG'){ const c = el.closest('[data-img-cont]'); if (c) c.classList.add('sin-img'); } }, true);
+  document.addEventListener('load',  e => { const el = e.target; if (el && el.tagName === 'IMG'){ const c = el.closest('[data-img-cont]'); if (c) c.classList.remove('sin-img'); } }, true);
+
+  let lang = (function(){ try { const g = localStorage.getItem('rishe-lang'); if (g === 'es' || g === 'en') return g; } catch(e){} return C.marca.idiomaInicial || 'es'; })();
+  const T_ = () => C.textos[lang];
+  const pesos = n => '$' + n.toLocaleString(lang === 'es' ? 'es-MX' : 'en-US');
+  const url = u => /^https?:/.test(u) ? u : SITIO + u;
+  const waURL = msg => 'https://wa.me/' + C.contacto.whatsapp + '?text=' + encodeURIComponent(msg || C.whatsappMsg[lang]);
+  const mapa = s => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('Tapetes Rishe ' + s.dir + ', ' + s.zona);
+
+  /* ── Figuras SVG ───────────────────────────────────────────────────── */
+  function medallon(){
+    let p = '';
+    for (let i = 0; i < 16; i++) p += '<ellipse cx="0" cy="-64" rx="9" ry="24" transform="rotate(' + (i*22.5) + ')"/>';
+    let q = '';
+    for (let i = 0; i < 8; i++) q += '<path d="M0-22 C8-30 8-40 0-46 C-8-40 -8-30 0-22Z" transform="rotate(' + (i*45) + ')"/>';
+    return '<svg class="medallon-svg" viewBox="-100 -100 200 200" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true">' +
+      '<circle r="97"/><circle r="91" stroke-dasharray="2 4"/>' + p +
+      '<rect x="-46" y="-46" width="92" height="92"/><rect x="-46" y="-46" width="92" height="92" transform="rotate(45)"/>' +
+      '<circle r="34"/>' + q + '<circle r="9" fill="currentColor"/></svg>';
+  }
+  const estrella = '<svg viewBox="-10 -10 20 20" aria-hidden="true"><path d="M0-9 2.6-6.3 6.4-6.4 6.3-2.6 9 0 6.3 2.6 6.4 6.4 2.6 6.3 0 9-2.6 6.3-6.4 6.4-6.3 2.6-9 0-6.3-2.6-6.4-6.4-2.6-6.3Z" fill="currentColor"/></svg>';
+  $$('[data-medallon]').forEach(e => e.innerHTML = medallon());
+  $$('[data-estrella]').forEach(e => e.innerHTML = estrella);
+
+  (function piso(){
+    let s = '<defs><linearGradient id="madera" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a6544"/><stop offset="1" stop-color="#b48a5f"/></linearGradient></defs>' +
+            '<rect width="1000" height="500" fill="url(#madera)"/>';
+    for (let x = -2400; x <= 3400; x += 90) s += '<line x1="500" y1="-900" x2="' + x + '" y2="500" stroke="rgba(55,32,18,.28)" stroke-width="2"/>';
+    s += '<rect width="1000" height="500" fill="url(#sombra)"/><defs><linearGradient id="sombra" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(0,0,0,.28)"/><stop offset=".5" stop-color="rgba(0,0,0,0)"/></linearGradient></defs>';
+    $('#pisoSvg').innerHTML = s;
+  })();
+
+  /* ── Hero ──────────────────────────────────────────────────────────── */
+  function pintarHero(){
+    const P = C.productos, a = P.find(p => p.n === C.marca.heroNombre) || P.find(p => p.hero) || P.slice().sort((x,y) => y.p - x.p)[0];
+    const otros = P.filter(p => p !== a && p.mano);
+    $('#imgA').src = F(a.i, 1200);
+    $('#imgB').src = F((otros[0] || P[1]).i, 700);
+    $('#imgC').src = F((otros[3] || P[2]).i, 700);
+    const ph = $('#precioHero');
+    ph.href = url(a.u);
+    ph.innerHTML = '<span>' + esc(a.n) + '</span><small>' + esc([a.med, a.mano ? T_().hechoMano : ''].filter(Boolean).join(' · ')) + '</small><b>' + pesos(a.p) + '</b>';
+    $$('[data-logo]').forEach(i => { i.src = C.imagenes.logo; if (!C.imagenes.usarLogo) i.closest('.logo').classList.add('solo-txt'); });
+    $('#imgNos').src = C.imagenes.nosotros;
+    $('#imgBanner').src = C.imagenes.banner;
+    $('#imgFinal').src = C.imagenes.final;
+    $('#tira').innerHTML = C.imagenes.galeria.map(g => '<figure data-img-cont><img src="' + esc(g) + '" alt="" loading="lazy" decoding="async"></figure>').join('');
+  }
+
+  function prepararMov(){
+    if (!M.activo) return;
+    const pon = (sel, tipo, vel) => { const e = $(sel); if (e){ e.dataset.mov = tipo; if (vel != null) e.dataset.vel = vel; } };
+    pon('#tapB', 'parallax', M.velDetras);
+    pon('#tapC', 'parallax', M.velHero);
+    pon('#heroMed', 'gira', M.velMedallon);
+    pon('#heroTexto', 'salida');
+    pon('#banda', 'banda', M.velBanda);
+    pon('#tira', 'banda', M.velGaleria);
+    pon('#capaNos', 'parallax', 0.14);
+    pon('#medNos', 'gira', 60);
+    pon('#capaBanner', 'parallax', M.velBanner);
+    pon('#capaFinal', 'parallax', M.velBanner * .8);
+  }
+
+  /* ── Promo, banda ──────────────────────────────────────────────────── */
+  function pintarPromo(){
+    const p = C.promos[lang];
+    $('#promo').innerHTML = esc(p.primera) + ' &nbsp; <a href="' + esc(C.contacto.instagram) + '" target="_blank" rel="noopener">' + esc(p.insta) + ' <b>' + esc(C.promos.codigo) + '</b></a>';
+  }
+  function pintarBanda(){
+    let t = ''; C.estilos.forEach(s => t += '<span>' + esc(s) + '</span>' + estrella);
+    $('#banda').innerHTML = t + t;
+  }
+
+  /* ── Colección ─────────────────────────────────────────────────────── */
+  let filtro = 'todos', mostrar = 12, vivo = null;
+  function pintarFiltros(){
+    $('#filtros').innerHTML = C.grupos.map(g => '<button type="button" data-g="' + g.k + '" aria-pressed="' + (g.k === filtro) + '">' + esc(g[lang]) + '</button>').join('');
+  }
+  $('#filtros').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    filtro = b.dataset.g; mostrar = 12; pintarFiltros(); pintarRejilla();
+  });
+
+  function pintarRejilla(){
+    const t = T_(), gr = (!menos.matches) ? M.giro : 0;
+    const todos = C.productos.map((p,i) => ({ p, i })).filter(({p}) =>
+      filtro === 'todos' ? true : filtro === 'mano' ? p.mano : p.g === filtro)
+      .sort((a,b) => (a.p.agotado ? 1 : 0) - (b.p.agotado ? 1 : 0));
+    const lista = todos.slice(0, mostrar);
+    const mas = $('#mas'); mas.hidden = todos.length <= mostrar;
+    $('#btnMas').textContent = t.verMas + ' (' + (todos.length - mostrar) + ')';
+    $('#notaPrecios').textContent = vivo ? t.notaVivo + ' ' + new Date(vivo).toLocaleString(lang === 'es' ? 'es-MX' : 'en-US', { dateStyle:'medium', timeStyle:'short' }) : t.notaPrecios;
+    $('#rejilla').innerHTML = lista.map(({p,i}, k) => {
+      const datos = [p.med, p.mat ? p.mat[lang] : '', p.mano ? '' : t.maquina].filter(Boolean).join(' · ');
+      const etiqueta = p.agotado ? '<span class="tag agot">' + esc(t.agotado) + '</span>'
+                     : p.antes ? '<span class="tag reb">' + esc(t.rebaja) + ' −' + Math.round((1 - p.p / p.antes) * 100) + '%</span>'
+                     : p.mano ? '<span class="tag">' + esc(t.hechoMano) + '</span>' : '';
+      return '<article class="ficha-t wipe' + (p.agotado ? ' agotado' : '') + '" style="--giro:' + (k % 2 ? -gr : gr) + 'deg">' +
+        '<a class="marco flecos" href="' + esc(url(p.u)) + '" target="_blank" rel="noopener" aria-label="' + esc(p.n + ', ' + pesos(p.p)) + '">' +
+          '<div class="tap-foto" data-img-cont>' +
+            etiqueta +
+            '<span class="letra">' + esc(p.n.charAt(0)) + '</span>' +
+            '<div class="capa" data-mov="parallax" data-vel="0.12"><img src="' + esc(F(p.i, 800)) + '" alt="' + esc(p.n) + '" loading="lazy" decoding="async"></div>' +
+          '</div></a>' +
+        '<h3>' + esc(p.n) + '</h3>' +
+        '<p class="datos">' + esc(datos) + '</p>' +
+        '<span class="precio">' + pesos(p.p) + (p.antes ? '<s>' + pesos(p.antes) + '</s>' : '') + '</span>' +
+        '<div class="acciones"><button class="enlace" type="button" data-sala="' + i + '">' + esc(t.verSala) + '</button>' +
+          '<a class="enlace" href="' + esc(url(p.u)) + '" target="_blank" rel="noopener">' + esc(t.comprar) + '</a></div>' +
+      '</article>';
+    }).join('');
+    revelar(); registrarMov();
+  }
+  $('#btnMas').addEventListener('click', () => { mostrar += 12; pintarRejilla(); });
+  $('#rejilla').addEventListener('click', e => {
+    const b = e.target.closest('[data-sala]'); if (!b) return;
+    sala.idx = +b.dataset.sala; sala.tam = tamDe(C.productos[sala.idx]); pintarSala();
+    $('#sala').scrollIntoView({ behavior: menos.matches ? 'auto' : 'smooth' });
+  });
+  /* ── Sala interactiva ──────────────────────────────────────────────── */
+  const tamDe = p => /^2|2\.4/.test(p.med) ? 'grande' : 'chico';
+  const sala = { idx: Math.max(0, C.productos.findIndex(p => p.n === C.marca.heroNombre || p.hero)), tam: null, pared: C.paredes[0].k };
+  sala.tam = tamDe(C.productos[sala.idx]);
+  function anchoPlano(){ const g = sala.tam === 'grande'; return movil.matches ? (g ? '88%' : '58%') : (g ? '68%' : '44%'); }
+  function pintarSala(){
+    const t = T_(), p = C.productos[sala.idx], P = C.paredes.find(x => x.k === sala.pared) || C.paredes[0];
+    const img = $('#imgSala');
+    img.style.opacity = '0';
+    const nueva = F(p.i, 1000);
+    const listo = () => { img.style.opacity = '1'; };
+    if (img.getAttribute('src') !== nueva){ img.onload = listo; img.onerror = listo; img.src = nueva; } else listo();
+    $('#plano').style.setProperty('--ancho', anchoPlano());
+    const esc_ = $('#escenaSala');
+    esc_.style.setProperty('--pa', P.a); esc_.style.setProperty('--pb', P.b);
+    esc_.setAttribute('aria-label', p.n + ' — ' + t.salaNota);
+    $('#salaNombre').textContent = p.n;
+    $('#salaDatos').textContent = [p.med, p.mat ? p.mat[lang] : '', p.mano ? t.hechoMano : t.maquina].filter(Boolean).join(' · ');
+    $('#salaPrecio').textContent = pesos(p.p);
+    $('#salaComprar').href = url(p.u);
+    $('#minisT').textContent = lang === 'es' ? 'Tapete' : 'Rug';
+    $('#minis').innerHTML = C.productos.map((q,i) => '<button class="mini" type="button" data-i="' + i + '" data-img-cont data-letra="' + esc(q.n.charAt(0)) + '" aria-pressed="' + (i === sala.idx) + '" aria-label="' + esc(q.n) + '">' +
+      '<img src="' + esc(F(q.i, 200)) + '" alt="" loading="lazy" decoding="async"></button>').join('');
+    $('#tamanos').innerHTML = [['chico', t.tamChico], ['grande', t.tamGrande]].map(([k, l]) => '<button type="button" data-tam="' + k + '" aria-pressed="' + (k === sala.tam) + '">' + esc(l) + '</button>').join('');
+    $('#paredes').innerHTML = C.paredes.map(w => '<button type="button" data-pared="' + w.k + '" aria-pressed="' + (w.k === sala.pared) + '"><i style="background:' + w.a + '"></i>' + esc(w[lang]) + '</button>').join('');
+  }
+  $('#minis').addEventListener('click', e => { const b = e.target.closest('[data-i]'); if (!b) return; sala.idx = +b.dataset.i; sala.tam = tamDe(C.productos[sala.idx]); const x = $('#minis').scrollLeft; pintarSala(); $('#minis').scrollLeft = x; });
+  $('#tamanos').addEventListener('click', e => { const b = e.target.closest('[data-tam]'); if (!b) return; sala.tam = b.dataset.tam; pintarSala(); });
+  $('#paredes').addEventListener('click', e => { const b = e.target.closest('[data-pared]'); if (!b) return; sala.pared = b.dataset.pared; pintarSala(); });
+  movil.addEventListener('change', () => $('#plano').style.setProperty('--ancho', anchoPlano()));
+
+  /* ── Cifras, nosotros, servicios ───────────────────────────────────── */
+  function pintarCifras(){
+    const t = T_(), d = [
+      { v: new Date().getFullYear() - C.marca.desde, et: t.cifAnios },
+      { v: vivo ? C.productos.length : C.marca.totalDisenos, et: t.cifDisenos },
+      { v: C.sucursales.length, et: t.cifSuc } ];
+    $('#cifras').innerHTML = d.map(x => '<li><span class="n cifra" data-meta="' + x.v + '">0</span><span class="et">' + esc(x.et) + '</span></li>').join('');
+    contadores();
+  }
+  function pintarNos(){ $('#estilos').innerHTML = ['Rústico','Clásico','Moderno','Kilim'].map(s => '<span>' + esc(s) + '</span>').join(''); }
+  function pintarServicios(){
+    $('#servs').innerHTML = C.servicios.map((s,i) => '<article class="serv rv"><div class="capa" data-mov="parallax" data-vel="0.12" data-img-cont>' +
+      '<img src="' + esc(C.imagenes.servicios[i] || '') + '" alt="" loading="lazy" decoding="async"></div>' +
+      '<div class="serv-txt"><h3>' + esc(s[lang].t) + '</h3><p>' + esc(s[lang].d) + '</p></div></article>').join('');
+  }
+
+  /* ── Cotizador → WhatsApp ──────────────────────────────────────────── */
+  function pintarCotizador(){
+    const Q = C.cotizador;
+    const sel = (nombre, arr) => {
+      const actual = (($('input[name="' + nombre + '"]:checked') || {}).value) || arr[0].k;
+      return arr.map(o => '<label><input type="radio" name="' + nombre + '" value="' + o.k + '"' + (o.k === actual ? ' checked' : '') + '><span>' + esc(o[lang]) + '</span></label>').join('');
+    };
+    $('#optServicio').innerHTML = sel('servicio', Q.servicios);
+    $('#optPieza').innerHTML = sel('pieza', Q.piezas);
+    const s = $('#cSucursal'), v = s.value;
+    s.innerHTML = C.sucursales.map(x => '<option value="' + x.id + '">' + esc(x.nombre + ' — ' + x.ciudad) + '</option>').join('');
+    if (v) s.value = v;
+  }
+  $('#formCotiza').addEventListener('submit', e => {
+    e.preventDefault();
+    const Q = C.cotizador, es = lang === 'es';
+    const nom = (arr, k) => (arr.find(o => o.k === k) || {})[lang] || '';
+    const serv = nom(Q.servicios, $('input[name="servicio"]:checked').value);
+    const pieza = nom(Q.piezas, $('input[name="pieza"]:checked').value);
+    const l = $('#cLargo').value, a = $('#cAncho').value;
+    const suc = C.sucursales.find(x => x.id === $('#cSucursal').value);
+    const notas = $('#cNotas').value.trim();
+    const lineas = [
+      es ? '¡Hola Tapetes Rishe! Quiero cotizar un servicio:' : 'Hi Tapetes Rishe! I would like a quote:',
+      (es ? '• Servicio: ' : '• Service: ') + serv,
+      (es ? '• Pieza: ' : '• Item: ') + pieza,
+      (l && a) ? (es ? '• Medidas: ' : '• Size: ') + l + ' × ' + a + ' m' : '',
+      suc ? (es ? '• Sucursal: ' : '• Store: ') + suc.nombre : '',
+      notas ? (es ? '• Comentarios: ' : '• Comments: ') + notas : '',
+      es ? 'Les envío fotos en seguida.' : "I'll send photos next."
+    ].filter(Boolean);
+    window.open(waURL(lineas.join('\n')), '_blank', 'noopener');
+  });
+
+  /* ── Sucursales, contacto, pie ─────────────────────────────────────── */
+  function pintarSucs(){
+    const t = T_(), k = C.contacto;
+    $('#sucs').innerHTML = C.sucursales.map(s => '<article class="suc rv"><p class="ciudad">' + esc(s.ciudad) + '</p><h3>' + esc(s.nombre) + '</h3>' +
+      '<address>' + esc(s.dir) + '<br>' + esc(s.zona) + '</address>' +
+      '<a class="btn btn-granate" href="' + esc(mapa(s)) + '" target="_blank" rel="noopener">' + esc(t.comoLlegar) + '</a></article>').join('');
+    $('#contactoFila').innerHTML =
+      '<a href="tel:' + k.telefonoLink + '">' + esc(k.telefono) + '</a>' +
+      '<a href="mailto:' + k.email + '">' + esc(k.email) + '</a>' +
+      '<a href="' + esc(k.instagram) + '" target="_blank" rel="noopener">Instagram</a>' +
+      '<a href="' + esc(k.facebook) + '" target="_blank" rel="noopener">Facebook</a>';
+    $('#pieContacto').innerHTML =
+      '<li><a href="tel:' + k.telefonoLink + '">' + esc(k.telefono) + '</a></li>' +
+      '<li><a data-wa href="#" target="_blank" rel="noopener">WhatsApp</a></li>' +
+      '<li><a href="mailto:' + k.email + '">' + esc(k.email) + '</a></li>' +
+      '<li><a href="' + esc(k.instagram) + '" target="_blank" rel="noopener">Instagram</a></li>' +
+      '<li><a href="' + esc(k.facebook) + '" target="_blank" rel="noopener">Facebook</a></li>';
+    $('#pieSucs').innerHTML = C.sucursales.map(s => '<li><a href="' + esc(mapa(s)) + '" target="_blank" rel="noopener">' + esc(s.nombre) + ', ' + esc(s.ciudad) + '</a></li>').join('');
+    $('#pieCopy').textContent = '© ' + new Date().getFullYear() + ' ' + C.marca.nombre + '. ' + t.derechos;
+    const cr = $('#pieCredito'); cr.textContent = C.pie.credito || ''; cr.href = C.pie.creditoUrl || '#'; cr.hidden = !C.pie.credito;
+    $('#pieDemo').hidden = !C.pie.esDemo;
+  }
+  function pintarEnlaces(){
+    $$('[data-wa]').forEach(a => a.href = waURL());
+    $$('[data-tienda]').forEach(a => a.href = SITIO + '/tienda');
+    $('#waFlotante').setAttribute('aria-label', T_().ctaWhatsapp);
+    $$('[data-marca]').forEach(e => e.textContent = C.marca.nombre);
+  }
+
+  function schema(){
+    const k = C.contacto;
+    const tiendas = C.sucursales.map(s => ({ "@type": ["Store","HomeGoodsStore"], "@id": SITIO + "/#" + s.id,
+      name: C.marca.nombre + " " + s.nombre, telephone: k.telefonoLink, email: k.email, priceRange: C.marca.rangoPrecio,
+      url: SITIO, address: { "@type": "PostalAddress", streetAddress: s.dir, addressLocality: s.zona, addressRegion: s.ciudad, addressCountry: "MX" } }));
+    const datos = { "@context": "https://schema.org", "@graph": [
+      { "@type": "Organization", "@id": SITIO + "/#org", name: C.marca.nombre, url: SITIO, foundingDate: String(C.marca.desde),
+        email: k.email, telephone: k.telefonoLink, sameAs: [k.instagram, k.facebook] } ].concat(tiendas) };
+    let tag = document.getElementById('ld'); if (!tag){ tag = document.createElement('script'); tag.type = 'application/ld+json'; tag.id = 'ld'; document.head.appendChild(tag); }
+    tag.textContent = JSON.stringify(datos);
+  }
+
+  function traducir(){
+    const t = T_();
+    $$('[data-t]').forEach(e => { const v = t[e.dataset.t]; if (v) e.textContent = v; });
+    $$('[data-t-aria]').forEach(e => { const v = t[e.dataset.tAria]; if (v) e.setAttribute('aria-label', v); });
+    $$('[data-t-ph]').forEach(e => { const v = t[e.dataset.tPh]; if (v) e.placeholder = v; });
+    $$('.idioma button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    document.documentElement.lang = lang;
+  }
+  function aplicarIdioma(){
+    traducir(); pintarPromo(); pintarBanda(); pintarFiltros(); pintarRejilla(); pintarSala(); pintarCifras(); pintarNos();
+    pintarServicios(); pintarCotizador(); pintarSucs(); pintarEnlaces(); pintarHero(); schema(); revelar(); registrarMov();
+  }
+  $$('.idioma button').forEach(b => b.addEventListener('click', () => {
+    if (b.dataset.lang === lang) return; lang = b.dataset.lang;
+    try { localStorage.setItem('rishe-lang', lang); } catch(e){}
+    aplicarIdioma();
+  }));
+
+  /* ── Aparición, contadores ─────────────────────────────────────────── */
+  let obsRv = null;
+  function revelar(){
+    const items = $$('.rv:not(.dentro), .wipe:not(.dentro)');
+    if (menos.matches || !('IntersectionObserver' in window)){ items.forEach(e => e.classList.add('dentro')); return; }
+    if (!obsRv) obsRv = new IntersectionObserver(en => en.forEach(x => { if (x.isIntersecting){ x.target.classList.add('dentro'); obsRv.unobserve(x.target); } }), { rootMargin: '0px 0px -6% 0px', threshold: .08 });
+    items.forEach(e => obsRv.observe(e));
+  }
+  function contadores(){
+    const ns = $$('#cifras .n'), fin = e => e.textContent = e.dataset.meta;
+    if (menos.matches || !('IntersectionObserver' in window)){ ns.forEach(fin); return; }
+    const io = new IntersectionObserver((en, o) => en.forEach(x => {
+      if (!x.isIntersecting) return; o.unobserve(x.target);
+      const e = x.target, meta = +e.dataset.meta, t0 = performance.now();
+      (function paso(n){ const p = Math.min((n - t0) / 1400, 1); e.textContent = Math.round(meta * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(paso); else fin(e); })(t0);
+    }), { threshold: .4 });
+    ns.forEach(e => io.observe(e));
+  }
+
+  /* ── Movimiento con el scroll (un solo bucle: lee y después escribe) ─ */
+  let piezas = [], obsMov = null;
+  function registrarMov(){
+    piezas = []; if (obsMov){ obsMov.disconnect(); obsMov = null; }
+    if (!M.activo || menos.matches){ $$('[data-mov]').forEach(e => { e.style.transform = ''; e.style.opacity = ''; }); return; }
+    piezas = $$('[data-mov]').map(el => ({ el, tipo: el.dataset.mov, vel: parseFloat(el.dataset.vel || '0.2'), caja: el.parentElement, activa: true }));
+    if ('IntersectionObserver' in window){
+      const porCaja = new Map();
+      piezas.forEach(p => { if (!porCaja.has(p.caja)) porCaja.set(p.caja, []); porCaja.get(p.caja).push(p); });
+      obsMov = new IntersectionObserver(en => en.forEach(x => (porCaja.get(x.target) || []).forEach(p => { p.activa = x.isIntersecting; p.el.style.willChange = x.isIntersecting ? 'transform' : ''; })), { rootMargin: '15% 0px' });
+      porCaja.forEach((_, c) => obsMov.observe(c));
+    }
+    mover();
+  }
+  function mover(){
+    if (!piezas.length) return;
+    const vh = innerHeight, vw = innerWidth;
+    const rs = piezas.map(p => p.activa ? p.caja.getBoundingClientRect() : null);
+    piezas.forEach((p, i) => {
+      const r = rs[i]; if (!r) return;
+      const t = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height))), d = t - .5;
+      if (p.tipo === 'parallax') p.el.style.transform = 'translate3d(0,' + (d * p.vel * r.height).toFixed(1) + 'px,0)';
+      else if (p.tipo === 'banda') p.el.style.transform = 'translate3d(' + (-d * p.vel * vw).toFixed(1) + 'px,0,0)';
+      else if (p.tipo === 'gira') p.el.style.transform = 'rotate(' + (d * p.vel).toFixed(2) + 'deg)';
+      else if (p.tipo === 'salida'){
+        const s = Math.max(0, Math.min(1, (t - .58) / .42));
+        p.el.style.opacity = (1 - s * .9).toFixed(3);
+        p.el.style.transform = 'translate3d(0,' + (s * -50).toFixed(1) + 'px,0)';
+      }
+    });
+  }
+
+  const barra = $('#barra'), wa = $('#waFlotante'); let pend = false;
+  function alScroll(){ const y = scrollY; mover(); barra.classList.toggle('visible', y > innerHeight * .7); wa.classList.toggle('visible', y > 300); pend = false; }
+  const prog = () => { if (!pend){ pend = true; requestAnimationFrame(alScroll); } };
+  addEventListener('scroll', prog, { passive: true }); addEventListener('resize', prog, { passive: true });
+
+  const sheet = $('#sheet'), abrir = $('#abrirMenu'), cerrar = $('#cerrarMenu');
+  function menu(v){ sheet.hidden = !v; requestAnimationFrame(() => sheet.dataset.abierto = String(v)); abrir.setAttribute('aria-expanded', String(v));
+    document.body.style.overflow = v ? 'hidden' : ''; (v ? cerrar : abrir).focus(); }
+  abrir.addEventListener('click', () => menu(true)); cerrar.addEventListener('click', () => menu(false));
+  sheet.addEventListener('click', e => { if (e.target.tagName === 'A') menu(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && sheet.dataset.abierto === 'true') menu(false); });
+
+  /* ── Catálogo en vivo: si la función de Netlify responde, reemplaza la lista fija ── */
+  function cargarCatalogo(){
+    if (!C.marca.catalogoEnVivo || location.protocol === 'file:' || !window.fetch) return;
+    const ctl = 'AbortController' in window ? new AbortController() : null;
+    const reloj = setTimeout(() => ctl && ctl.abort(), 6000);
+    fetch(C.marca.catalogoEnVivo, { signal: ctl ? ctl.signal : undefined })
+      .then(r => r.ok ? r.json() : Promise.reject(r.status))
+      .then(d => {
+        clearTimeout(reloj);
+        if (!d || !Array.isArray(d.productos) || !d.productos.length) return;
+        const fijos = {}; C.productos.forEach(p => fijos[p.n.toLowerCase()] = p);
+        C.productos = d.productos.map(p => {
+          const f = fijos[p.n.toLowerCase()];
+          return f ? Object.assign({}, p, { mat: p.mat || f.mat, med: p.med || f.med, mano: p.mano || f.mano }) : p;
+        });
+        vivo = d.actualizado || new Date().toISOString();
+        const sel = C.productos.findIndex(p => p.n === C.marca.heroNombre);
+        sala.idx = sel >= 0 ? sel : 0; sala.tam = tamDe(C.productos[sala.idx]);
+        aplicarIdioma();
+      })
+      .catch(e => { clearTimeout(reloj); console.warn("catalogo", e); });
+  }
+
+  prepararMov();
+  aplicarIdioma();
+  alScroll();
+  cargarCatalogo();
+  menos.addEventListener('change', () => { revelar(); registrarMov(); });
+})();
+</script>
+</body>
+</html>
